@@ -2,9 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Auto Rentals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+<nav class="bg-blue-900 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Intelligent Auto Rentals</h1>
+        <div class="space-x-4">
+            <a href="login.html" class="hover:text-blue-300">Login</a>
+            <a href="register.html" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow container mx-auto p-8 flex flex-col items-center justify-center text-center">
+    <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Find Your Perfect Drive</h2>
+    <p class="text-lg text-gray-600 mb-8 max-w-2xl">
+        Browse our premium fleet of cars, bikes, and vans. Book instantly and hit the road.
+    </p>
+
+    <div class="space-x-4">
+        <a href="vehicles.jsp" class="bg-green-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-green-500 shadow-lg transition">
+            Browse Vehicles
+        </a>
+        <a href="login.html" class="bg-gray-800 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-gray-700 shadow-lg transition">
+            Manage My Bookings
+        </a>
+    </div>
+</main>
+
+<footer class="bg-gray-800 text-white text-center p-4 mt-auto">
+    <p>&copy; 2026 Intelligent Auto Rentals. All rights reserved.</p>
+</footer>
 
 </body>
 </html>

@@ -11,7 +11,7 @@ public class DBConnection {
     private static final String PASSWORD = "";
 
     private static Connection connection = null;
-
+//test
     // Private constructor to prevent instantiation (Singleton pattern)
     private DBConnection() {}
 

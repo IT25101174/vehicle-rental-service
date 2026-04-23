@@ -1,3 +1,3 @@
-01,John,john@gmail.com,1234
-02,Alice,alice@gmail.com,abcd
-03,Bob,bob@gmail.com,pass123
+1,Praveen,praveen@email.com,pass123,customer
+2,Thamira,thamira@email.com,pass456,admin
+3,Ihjas,ihjas@email.com,pass789,customer

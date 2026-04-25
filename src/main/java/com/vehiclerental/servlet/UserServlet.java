@@ -19,25 +19,29 @@ public class UserServlet extends HttpServlet
             throws IOException
     {
         String action = request.getParameter("action");
-
+        String securePath = getServletContext().getRealPath("/WEB-INF/data/users.txt");
         if ("register".equals(action))
         {
-            int id = Integer.parseInt(request.getParameter("id"));
+// We don't grab ID from the form anymore, the Service handles that!
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            User user = new User(id, name, email, password);
-            service.addUser(user);
+// Grab the missing 5th parameter from the HTML dropdown
+            String role = request.getParameter("role");
 
-            response.getWriter().println("Registered Successfully");
+// Build the User with 5 parameters (passing 0 for the ID placeholder)
+            User user = new User(0, name, email, password, role);
+            service.addUser(user, securePath);
+
+            response.sendRedirect("login.html");
         }
         else if ("login".equals(action))
         {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            boolean ok = service.login(email, password);
+            boolean ok = service.login(email, password, securePath);
 
             if (ok)
                 response.getWriter().println("Login Success");

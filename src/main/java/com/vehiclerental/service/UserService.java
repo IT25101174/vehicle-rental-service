@@ -1,7 +1,7 @@
 package com.vehiclerental.service;
 
 import com.vehiclerental.model.User;
-import com.vehiclerental.FileHandler; // Importing your shared utility!
+import com.vehiclerental.FileHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,43 +9,45 @@ import java.util.List;
 
 public class UserService {
 
-    // Pointing to the correct folder you set up
-    private static final String FILE_PATH = "data/users.txt";
+    // IMPORTANT: We completely deleted the hardcoded FILE_PATH here!
 
-    // Save user to file
-    public void addUser(User user) {
+    // 1. addUser now strictly uses the dynamic filePath
+    public void addUser(User user, String filePath) {
         try {
-            // 1. Automatically calculate the next ID (1, 2, 3...)
-            int nextId = FileHandler.getNextId(FILE_PATH);
+            System.out.println("ATTENTION: Securely saving data to -> " + filePath);
+
+            // Generate ID using the dynamic path
+            int nextId = FileHandler.getNextId(filePath);
             user.setId(nextId);
 
-            // 2. Use the helper method from the User model to format the string
-            // This safely writes: ID, Name, Email, Password, Role
-            FileHandler.appendLine(FILE_PATH, user.toFileString());
+            // Save the data using the dynamic path
+            FileHandler.appendLine(filePath, user.toFileString());
+
+            System.out.println("SUCCESS: File writing complete!");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // Get all users
-    public ArrayList<User> getUsers() {
+    // 2. getUsers now accepts the dynamic filePath
+    public ArrayList<User> getUsers(String filePath) {
         ArrayList<User> users = new ArrayList<>();
 
         try {
-            // Read all lines using your FileHandler
-            List<String> lines = FileHandler.readAll(FILE_PATH);
+            // Read lines from the dynamic path
+            List<String> lines = FileHandler.readAll(filePath);
 
             for (String line : lines) {
                 String[] data = line.split(",");
 
-                // Rebuild the User object (Now with 5 parameters!)
+                // Rebuild the User object (Now with 5 parameters)
                 User user = new User(
                         Integer.parseInt(data[0]),
                         data[1],
                         data[2],
                         data[3],
-                        data[4] // This is the Role field
+                        data[4] // Role field
                 );
 
                 users.add(user);
@@ -57,9 +59,11 @@ public class UserService {
         return users;
     }
 
-    // Login check
-    public boolean login(String email, String password) {
-        ArrayList<User> users = getUsers();
+    // 3. login accepts the dynamic filePath AND passes it to getUsers
+    public boolean login(String email, String password, String filePath) {
+
+        // Pass the map to getUsers so it knows where to read from!
+        ArrayList<User> users = getUsers(filePath);
 
         for (User u : users) {
             if (u.getEmail().equals(email) && u.getPassword().equals(password)) {

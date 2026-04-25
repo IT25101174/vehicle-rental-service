@@ -1,72 +1,61 @@
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.vehiclerental.model.User" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Users - Admin View</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f4f4f9; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #2c3e50; color: white; }
+    </style>
+</head>
+<body>
 
-<style>
-    body {
-        background: #09090b;
-        color: #f4f0ea;
-        font-family: 'Outfit', sans-serif;
-        padding: 40px;
-    }
+<div class="container">
+    <h2>System Users Directory</h2>
+    <p>Admin Access Only</p>
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #111113;
-    }
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
 
-    th, td {
-        padding: 12px;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-        text-align: left;
-    }
+        <%-- This is where the Java Magic happens! --%>
+        <%
+            // Unpack the delivery truck we sent from the Servlet
+            ArrayList<User> users = (ArrayList<User>) request.getAttribute("userList");
 
-    th {
-        color: #f0a500;
-    }
-
-    h2 {
-        font-family: 'Syne', sans-serif;
-        margin-bottom: 20px;
-    }
-
-    a {
-        color: #f0a500;
-        text-decoration: none;
-    }
-</style>
-
-<h2>User List (Admin)</h2>
-
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Action</th>
-    </tr>
-
-    <%
-        List<User> users = (List<User>) request.getAttribute("users");
-
-        if (users != null) {
-            for (User u : users) {
-    %>
-
-    <tr>
-        <td><%= u.getId() %></td>
-        <td><%= u.getName() %></td>
-        <td><%= u.getEmail() %></td>
-        <td><%= u.getPassword() %></td>
-        <td>
-            <a href="user?action=edit&id=<%= u.getId() %>">Edit</a>
-        </td>
-    </tr>
-
-    <%
+            if (users != null && !users.isEmpty()) {
+                // Standard Java for-loop to generate HTML rows
+                for (User u : users) {
+        %>
+        <tr>
+            <td><%= u.getId() %></td>
+            <td><%= u.getName() %></td>
+            <td><%= u.getEmail() %></td>
+            <td><strong style="color: <%= u.getRole().equals("admin") ? "red" : "green" %>"><%= u.getRole().toUpperCase() %></strong></td>
+        </tr>
+        <%
             }
-        }
-    %>
+        } else {
+        %>
+        <tr>
+            <td colspan="4">No users found in the system.</td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
 
-</table>
+    <br>
+    <a href="login.html">Logout</a>
+</div>
+
+</body>
+</html>

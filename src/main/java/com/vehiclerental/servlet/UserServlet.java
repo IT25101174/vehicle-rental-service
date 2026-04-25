@@ -15,6 +15,25 @@ public class UserServlet extends HttpServlet
 {
     UserService service = new UserService();
 
+    // Add this right above or below your doPost method in UserServlet.java
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, jakarta.servlet.ServletException {
+        String action = request.getParameter("action");
+
+        // Grab the same dynamic path we used earlier!
+        String dynamicPath = getServletContext().getRealPath("/data/users.txt");
+
+        if ("listUsers".equals(action)) {
+            // 1. Fetch all users from the text file
+            java.util.ArrayList<User> allUsers = service.getUsers(dynamicPath);
+
+            // 2. Attach the list to the request (like putting a package in a delivery truck)
+            request.setAttribute("userList", allUsers);
+
+            // 3. Forward the truck into the secure WEB-INF vault to the JSP page
+            request.getRequestDispatcher("/WEB-INF/userList.jsp").forward(request, response);
+        }
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException
     {

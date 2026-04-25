@@ -10,7 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 
 import java.io.IOException;
 
-@WebServlet("/user")
+@WebServlet("/register")
 public class UserServlet extends HttpServlet
 {
     UserService service = new UserService();

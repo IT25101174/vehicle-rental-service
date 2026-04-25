@@ -7,18 +7,19 @@ public class User
     protected String name;
     protected String email;
     protected String password;
-
+    private String role;
     //Default Constructor
     public User()
     {}
 
     // Parameterized Constructor
-    public User(int id, String name, String email, String password)
+    public User(int id, String name, String email, String password, String role)
     {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     // Getters & Setters
@@ -33,4 +34,12 @@ public class User
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+
+    // Helper method to write to text file easily
+    public String toFileString() {
+        return id + "," + name + "," + email + "," + password + "," + role;
+    }
 }

@@ -11,7 +11,7 @@ public class CustomerUser extends User
 
     public CustomerUser(int id, String name, String email, String password, String customerType)
     {
-        super(id, name, email, password);
+        super(id, name, email, password, "customer");
         this.customerType = customerType;
     }
 

@@ -1,55 +1,56 @@
 package com.vehiclerental.service;
 
 import com.vehiclerental.model.User;
+import com.vehiclerental.FileHandler; // Importing your shared utility!
 
-import java.io.*;
-
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class UserService
-{
-    private static final String FILE_NAME = "users.txt";
+public class UserService {
+
+    // Pointing to the correct folder you set up
+    private static final String FILE_PATH = "data/users.txt";
 
     // Save user to file
-    public void addUser(User user)
-    {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true)))
-        {
-            bw.write(user.getId() + "," + user.getName() + "," +
-                    user.getEmail() + "," + user.getPassword());
-            bw.newLine();
-        }
-        catch (IOException e)
-        {
+    public void addUser(User user) {
+        try {
+            // 1. Automatically calculate the next ID (1, 2, 3...)
+            int nextId = FileHandler.getNextId(FILE_PATH);
+            user.setId(nextId);
+
+            // 2. Use the helper method from the User model to format the string
+            // This safely writes: ID, Name, Email, Password, Role
+            FileHandler.appendLine(FILE_PATH, user.toFileString());
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     // Get all users
-    public ArrayList<User> getUsers()
-    {
+    public ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME)))
-        {
-            String line;
+        try {
+            // Read all lines using your FileHandler
+            List<String> lines = FileHandler.readAll(FILE_PATH);
 
-            while ((line = br.readLine()) != null)
-            {
+            for (String line : lines) {
                 String[] data = line.split(",");
 
+                // Rebuild the User object (Now with 5 parameters!)
                 User user = new User(
                         Integer.parseInt(data[0]),
                         data[1],
                         data[2],
-                        data[3]
+                        data[3],
+                        data[4] // This is the Role field
                 );
 
                 users.add(user);
             }
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -57,18 +58,14 @@ public class UserService
     }
 
     // Login check
-    public boolean login(String email, String password)
-    {
+    public boolean login(String email, String password) {
         ArrayList<User> users = getUsers();
 
-        for (User u : users)
-        {
-            if (u.getEmail().equals(email) && u.getPassword().equals(password))
-            {
+        for (User u : users) {
+            if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
                 return true;
             }
         }
-
         return false;
     }
 }

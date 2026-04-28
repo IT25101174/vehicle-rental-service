@@ -1,5 +1,4 @@
-/*package com.vehiclerental.servlet;
-
+package com.vehiclerental.service;
 import com.vehiclerental.model.Category;
 import com.vehiclerental.util.FileHandler;
 
@@ -76,4 +75,4 @@ public class CategoryService {
         FileHandler.writeAll(path, updated);
     }
 }
-*/
+

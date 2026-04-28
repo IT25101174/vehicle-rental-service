@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Vehicle</title>
+</head>
+<body>
+<h2>Add New Vehicle</h2>
+
+<form action="vehicle" method="post">
+
+    <!This hidden input tells servlet which action to perform>
+    <input type="hidden" name="action" value="add">
+
+    <label>Brand:</label>
+    <input type="text" name="brand" required>
+    <br><br>
+
+    <label>Type:</label>
+    <input type="text" name="type" required>
+    <br><br>
+
+    <label>Price Per Day:</label>
+    <input type="number" name="pricePerDay" step="0.01" required>
+    <br><br>
+
+    <label>Available:</label>
+    <select name="available">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Add Vehicle</button>
+</form>
+
+<br>
+
+<!-- Link to view vehicle list -->
+<a href="vehicle?action=list">View Vehicle List</a>
+
+</body>
+</html>

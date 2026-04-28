@@ -1,4 +1,4 @@
-/*package com.vehiclerental.model;
+package com.vehiclerental.model;
 
 // Category class
 public class Category {
@@ -47,6 +47,6 @@ public class Category {
                     parts[2]
             );
         }
-}*/
+}
 
 

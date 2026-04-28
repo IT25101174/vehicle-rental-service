@@ -1,4 +1,4 @@
-package com.vehiclerental.model;
+/*package com.vehiclerental.model;
 
 //Car class inherits Vehicle class
 public class Car extends Vehicle {
@@ -14,4 +14,4 @@ public class Car extends Vehicle {
             return doors;
         }
 }
-
+*/

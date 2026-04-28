@@ -1,4 +1,4 @@
-package com.vehiclerental.model;
+/*package com.vehiclerental.model;
 
 //Bike class inherits Vehicle
 public class Bike extends Vehicle {
@@ -12,3 +12,4 @@ public class Bike extends Vehicle {
         return hasGear;
     }
 }
+*/

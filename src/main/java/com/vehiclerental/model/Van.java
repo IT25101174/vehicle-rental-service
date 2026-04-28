@@ -1,4 +1,4 @@
-package com.vehiclerental.model;
+/*package com.vehiclerental.model;
 
 //Van class inherits Vehicle
 public class Van extends Vehicle {
@@ -13,3 +13,4 @@ public class Van extends Vehicle {
         return capacity;
     }
 }
+*/

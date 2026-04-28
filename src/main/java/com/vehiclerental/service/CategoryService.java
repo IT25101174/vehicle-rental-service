@@ -1,6 +1,7 @@
 package com.vehiclerental.service;
+
 import com.vehiclerental.model.Category;
-import com.vehiclerental.util.FileHandler;
+import com.vehiclerental.FileHandler;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,4 +76,3 @@ public class CategoryService {
         FileHandler.writeAll(path, updated);
     }
 }
-

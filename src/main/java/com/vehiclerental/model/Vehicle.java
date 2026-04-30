@@ -13,6 +13,7 @@ public class Vehicle {
 
         }
 
+        //parameterized constructor
         public Vehicle(int id, String brand, String type, double pricePerDay, boolean available) {
             this.id = id;
             this.brand = brand;

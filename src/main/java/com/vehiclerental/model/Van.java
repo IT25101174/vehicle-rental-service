@@ -1,16 +1,22 @@
-/*package com.vehiclerental.model;
+package com.vehiclerental.model;
 
-//Van class inherits Vehicle
+//Van class inherits from Vehicle class
 public class Van extends Vehicle {
-    private int capacity; //number of passengers
+    private int seatingCapacity; //number of passengers
 
-    private Van(int id,String name,double price,int capacity){
-        super(id,name,price);
-        this.capacity = capacity;
+    public Van(int id,String brand, String type, double pricePerDay, boolean available, int seatingCapacity ){
+        super(id, brand, type, pricePerDay, available);//Connects to the parent constructor with correct parameters
+        this.seatingCapacity = seatingCapacity;
     }
 
-    public int getCapacity(){
-        return capacity;
+    //Getter for seatingCapacity
+    public int getSeatingCapacity(){
+        return seatingCapacity;
     }
+
+    //Setter for seatingCapacity
+    public void setSeatingCapacity(int seatingCapacity){
+        this.seatingCapacity = seatingCapacity;
+    }
+
 }
-*/

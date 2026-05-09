@@ -1,17 +1,22 @@
-/*package com.vehiclerental.model;
+package com.vehiclerental.model;
 
-//Car class inherits Vehicle class
+//Car class inherits from Vehicle class
 public class Car extends Vehicle {
-        private int doors; //Specific property for car
+    private String fuelType; //Specific property for car
 
-        public Car(int id, String name, double price, int doors) {
-            super(id, name, price); //Call parent constructor
-            this.doors = doors;
-        }
+    public Car(int id, String brand, String type, double pricePerDay, boolean available, String fuelType) {
+        super(id, brand, type, pricePerDay, available); //super() connects this class to the Vehicle class constructor
+        this.fuelType = fuelType;
+    }
 
-        //Getter method
-        public int getDoors(){
-            return doors;
-        }
+    //Getter foe fuelType
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    //Setter for fuelType
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
 }
-*/

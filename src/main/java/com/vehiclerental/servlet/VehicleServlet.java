@@ -143,7 +143,7 @@ import java.util.List;
                     break;
 
                 // Default
-                default:
+            default:
                     response.sendRedirect("vehicle?action=list");
             }
         }

@@ -116,7 +116,7 @@ import java.util.List;
                     int vehicleId = Integer.parseInt(parts[0]);
 
                     if (vehicleId != id) {
-                        newLines.add(line);
+                        newLines.add(line); // only keep lines that don't match
                     }
                 }
 

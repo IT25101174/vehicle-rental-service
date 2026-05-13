@@ -85,6 +85,7 @@ import java.util.List;
                     int vehicleId = Integer.parseInt(parts[0]);
 
                     if (vehicleId == updatedVehicle.getId()) {
+                        //replace line with new data
                         String newLine = updatedVehicle.getId() + "," +
                                 updatedVehicle.getBrand() + "," +
                                 updatedVehicle.getType() + "," +
@@ -93,11 +94,11 @@ import java.util.List;
 
                         newLines.add(newLine);
                     } else {
-                        newLines.add(line);
+                        newLines.add(line);// keep all other lines unchanged
                     }
                 }
 
-                FileHandler.writeAll(filePath, newLines);
+                FileHandler.writeAll(filePath, newLines); // write everything back
 
             } catch (IOException e) {
                 e.printStackTrace();

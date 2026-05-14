@@ -4,3 +4,4 @@
 4,uhd,we@gmail.com,we,customer
 5,New User,newuser@test.com,1234,customer
 6,abcd,abcd@gmail.com,abcd@1234,customer
+7,Beam,beamadmin@test.com,thamira,admin

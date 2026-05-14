@@ -27,6 +27,7 @@ import java.util.List;
 
                 FileHandler.appendLine(filePath, line);
 
+                // display the error details when file handling
             } catch (IOException e) {
                 e.printStackTrace();
             }

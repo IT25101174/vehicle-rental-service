@@ -2,3 +2,5 @@
 2,Thamira,thamira@test.com,thamira,admin
 3,mick,mick@gmail.com,123,customer
 4,uhd,we@gmail.com,we,customer
+5,New User,newuser@test.com,1234,customer
+6,abcd,abcd@gmail.com,abcd@1234,customer

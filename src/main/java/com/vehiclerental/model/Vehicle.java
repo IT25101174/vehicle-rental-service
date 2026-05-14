@@ -8,12 +8,12 @@ public class Vehicle {
         private double pricePerDay;
         private boolean available;
 
-        //Default constructor
+        //Default constructor - creates empty vehicle object
         public Vehicle() {
 
         }
 
-        //parameterized constructor
+        //parameterized constructor - creates vehicle with all values at once
         public Vehicle(int id, String brand, String type, double pricePerDay, boolean available) {
             this.id = id;
             this.brand = brand;

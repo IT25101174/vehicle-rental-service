@@ -251,7 +251,15 @@
             <p><b>Vehicle:</b> <%= b.getVehicleId() %></p>
             <p><b>From:</b> <%= b.getStartDate() %></p>
             <p><b>To:</b> <%= b.getEndDate() %></p>
-            <p><b>Status:</b> <span class="status <%= statusClass %>"><%= b.getStatus() %></span></p>
+
+                        <a href="booking?action=delete&id=<%= b.getId() %>"
+                           style="display: block; text-align: center; margin-top: 1rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
+                           onmouseover="this.style.background='rgba(248,113,113,0.1)'"
+                           onmouseout="this.style.background='transparent'"
+                           onclick="return confirm('Are you sure you want to cancel this booking?');">
+                           Cancel Booking
+                        </a>
+
         </div>
     <% } %>
     </div>

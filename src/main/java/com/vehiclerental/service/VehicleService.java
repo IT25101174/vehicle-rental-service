@@ -1,8 +1,7 @@
 package com.vehiclerental.service;
 
 import com.vehiclerental.FileHandler; //file read/write
-import com.vehiclerental.model.Vehicle;
-
+import com.vehiclerental.model.Vehicle; //vehicle objects
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

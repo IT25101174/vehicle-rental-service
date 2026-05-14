@@ -52,7 +52,7 @@ public class BookingServlet extends HttpServlet {
             request.getRequestDispatcher("WEB-INF/views/allBookings.jsp").forward(request, response);
 
         } else { // default → my bookings
-            int userId = 1; // demo (later session use pannalam)
+            int userId = 2; // demo (later session use pannalam)
             List<Booking> list = service.getBookingsByUser(userId);
             request.setAttribute("bookings", list);
             request.getRequestDispatcher("WEB-INF/views/myBookings.jsp").forward(request, response);

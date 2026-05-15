@@ -1,11 +1,10 @@
 package com.vehiclerental.service;
 
 import com.vehiclerental.FileHandler; //file read/write
-import com.vehiclerental.model.Vehicle;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.vehiclerental.model.Vehicle; //vehicle objects
+import java.io.IOException; // catch the file errors
+import java.util.ArrayList; // create resizable list
+import java.util.List; // declare the list type
 
     public class VehicleService {
 
@@ -28,6 +27,7 @@ import java.util.List;
 
                 FileHandler.appendLine(filePath, line);
 
+                // display the error details when file handling
             } catch (IOException e) {
                 e.printStackTrace();
             }

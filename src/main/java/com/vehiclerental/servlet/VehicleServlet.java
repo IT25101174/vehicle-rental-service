@@ -1,16 +1,16 @@
 package com.vehiclerental.servlet;
 
-import com.vehiclerental.model.Vehicle;
-import com.vehiclerental.service.VehicleService;
+import com.vehiclerental.model.Vehicle; //create vehicle objects
+import com.vehiclerental.service.VehicleService; //call service methods
 
-import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletException; //handle servlet errors
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest; //get the browser data
+import jakarta.servlet.http.HttpServletResponse; //send to the browser data
 
-import java.io.IOException;
-import java.util.List;
+import java.io.IOException; //handle IO errors
+import java.util.List; //store vehicle list
 
     @WebServlet("/vehicle")
     public class VehicleServlet extends HttpServlet {

@@ -1,14 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligent Auto Rentals</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Syne:wght@400;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         :root {
             --bg: #09090b;
             --surface: #111113;
@@ -17,7 +16,6 @@
             --text: #f4f0ea;
             --muted: #7a7672;
         }
-
         body {
             background: var(--bg);
             color: var(--text);
@@ -26,7 +24,6 @@
             display: flex;
             flex-direction: column;
         }
-
         nav {
             position: sticky;
             top: 0;
@@ -38,8 +35,7 @@
             background: rgba(9,9,11,0.85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-         }
-
+        }
         .logo {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
@@ -51,7 +47,6 @@
             align-items: center;
             gap: 0.55rem;
         }
-
         .logo-mark {
             width: 28px; height: 28px;
             background: var(--gold);
@@ -59,18 +54,14 @@
             display: grid;
             place-items: center;
         }
-
         .nav-right { display: flex; align-items: center; gap: 1.5rem; }
-
         .nav-right a {
             text-decoration: none;
             font-size: 0.875rem;
             color: var(--muted);
             transition: color 0.2s;
         }
-
         .nav-right a:hover { color: var(--text); }
-
         .nav-cta {
             background: var(--gold) !important;
             color: #000 !important;
@@ -79,22 +70,20 @@
             font-weight: 500 !important;
             transition: opacity 0.2s !important;
         }
-
         .nav-cta:hover { opacity: 0.85 !important; }
 
+        /* Updated Main Layout for Side-by-Side Viewport */
         main {
             flex: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 7rem 6% 6rem;
+            justify-content: space-between;
+            padding: 5rem 6%;
             position: relative;
             overflow: hidden;
-            text-align: center;
         }
-
         main::before {
-            content: '';
+            content: "";
             position: absolute;
             top: 5%;
             left: 50%;
@@ -103,9 +92,8 @@
             background: radial-gradient(ellipse, rgba(240,165,0,0.09) 0%, transparent 68%);
             pointer-events: none;
         }
-
         main::after {
-            content: '';
+            content: "";
             position: absolute;
             inset: 0;
             background-image:
@@ -115,13 +103,18 @@
             mask-image: radial-gradient(ellipse 80% 65% at 50% 50%, black 30%, transparent 100%);
             pointer-events: none;
         }
-
-        .hero-inner {
-            position: relative;
+        .hero-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
             z-index: 2;
-            max-width: 660px;
+            gap: 2rem;
         }
-
+        .hero-inner {
+            max-width: 550px;
+            text-align: left;
+        }
         .eyebrow {
             display: inline-flex;
             align-items: center;
@@ -137,37 +130,30 @@
             margin-bottom: 2rem;
             animation: up 0.6s ease both;
         }
-
         h2 {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: clamp(2.8rem, 6.5vw, 4.5rem);
-            line-height: 1.06;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
             letter-spacing: -0.03em;
             margin-bottom: 1.4rem;
             animation: up 0.6s 0.08s ease both;
         }
-
         h2 span { color: var(--gold); }
-
         .hero-desc {
             font-size: 1.05rem;
             color: var(--muted);
             font-weight: 300;
             line-height: 1.75;
-            max-width: 440px;
-            margin: 0 auto 2.8rem;
+            margin-bottom: 2.8rem;
             animation: up 0.6s 0.16s ease both;
         }
-
         .hero-buttons {
             display: flex;
             gap: 0.9rem;
-            justify-content: center;
             flex-wrap: wrap;
             animation: up 0.6s 0.24s ease both;
         }
-
         .btn-main {
             background: var(--gold);
             color: #000;
@@ -181,9 +167,7 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .btn-main:hover { opacity: 0.85; transform: translateY(-2px); }
-
         .btn-outline {
             background: transparent;
             color: var(--text);
@@ -198,8 +182,22 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .btn-outline:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+        /* New Right Showcase Container for the Car Graphic */
+        .hero-image-showcase {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: up 0.8s 0.2s ease both;
+        }
+        .hero-image-showcase img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.7));
+        }
 
         footer {
             background: var(--surface);
@@ -209,65 +207,73 @@
             font-size: 0.82rem;
             color: var(--muted);
         }
-
         @keyframes up {
             from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive scaling */
+        @media (max-width: 900px) {
+            .hero-container { flex-direction: column; text-align: center; }
+            .hero-inner { text-align: center; margin: 0 auto; }
+            .hero-buttons { justify-content: center; }
         }
     </style>
 </head>
 <body>
-
-<nav>
-    <a href="#" class="logo">
-        <span class="logo-mark">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M4 8.5H10" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-        </span>
-        Intelligent Auto Rentals
-    </a>
-    <div class="nav-right">
-        <% 
-            String userName = (String) session.getAttribute("userName");
-            String role = (String) session.getAttribute("role");
-            if (userName != null) { 
-        %>
-            <span style="font-size: 0.85rem; color: var(--gold);">Welcome, <strong><%= userName %></strong></span>
-            <% if ("admin".equalsIgnoreCase(role)) { %>
-                <a href="user?action=listUsers">Admin Panel</a>
-            <% } %>
-            <a href="user?action=logout" style="color: var(--danger);">Logout</a>
-        <% } else { %>
-            <a href="login.html">Login</a>
-            <a href="register.html" class="nav-cta">Sign Up</a>
-        <% } %>
-    </div>
-</nav>
-
-<main>
-    <div class="hero-inner">
-        <div class="eyebrow">Premium Fleet &nbsp;·&nbsp; Instant Booking</div>
-        <h2>Find Your <span>Perfect Drive</span></h2>
-        <p class="hero-desc">
-            Browse our premium fleet of cars, bikes, and vans. Book instantly and hit the road.
-        </p>
-        <div class="hero-buttons">
-            <a href="vehicle?action=list" class="btn-main">
-                Browse Vehicles
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-                    <path d="M3 7.5h9M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <nav>
+        <a href="#" class="logo">
+            <span class="logo-mark">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 8.5H10" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
                 </svg>
-            </a>
-            <a href="booking?action=my" class="btn-outline">Manage My Bookings</a>
+            </span>
+            Intelligent Auto Rentals
+        </a>
+        <div class="nav-right">
+            <%
+                String userName = (String) session.getAttribute("userName");
+                String role = (String) session.getAttribute("role");
+                if (userName != null) {
+            %>
+                <span style="font-size: 0.85rem; color: var(--gold);">Welcome, <strong><%= userName %></strong></span>
+                <% if ("admin".equalsIgnoreCase(role)) { %>
+                    <a href="user?action=listUsers">Admin Panel</a>
+                <% } %>
+                <a href="user?action=logout" style="color: #ef4444;">Logout</a>
+            <% } else { %>
+                <a href="login.html">Login</a>
+                <a href="register.html" class="nav-cta">Sign Up</a>
+            <% } %>
         </div>
-    </div>
-</main>
+    </nav>
 
-<footer>
-    <p>&copy; 2026 Intelligent Auto Rentals. All rights reserved.</p>
-</footer>
+    <main>
+        <div class="hero-container">
+            <div class="hero-inner">
+                <div class="eyebrow">Premium Fleet &nbsp; &nbsp; Instant Booking</div>
+                <h2>Find Your <span>Perfect Drive</span></h2>
+                <p class="hero-desc">Browse our premium fleet of cars, bikes, and vans. Book instantly and hit the road.</p>
+                <div class="hero-buttons">
+                    <a href="vehicle?action=list" class="btn-main">
+                        Browse Vehicles
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                            <path d="M3 7.5h9M8.5 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <a href="booking?action=my" class="btn-outline">Manage My Bookings</a>
+                </div>
+            </div>
 
+            <div class="hero-image-showcase">
+                <img src="BMW.png" alt="Featured BMW Car">
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Intelligent Auto Rentals. All rights reserved.</p>
+    </footer>
 </body>
 </html>

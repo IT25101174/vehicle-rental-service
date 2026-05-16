@@ -58,6 +58,38 @@ public class BookingServlet extends HttpServlet {
             return;
         }
         
+        if ("getBookedDates".equals(action)) {
+            String vIdParam = request.getParameter("vehicleId");
+            if (vIdParam != null && !vIdParam.trim().isEmpty()) {
+                try {
+                    int vehicleId = Integer.parseInt(vIdParam.trim());
+                    List<Booking> all = service.getAllBookings();
+                    System.out.println("DEBUG: Total bookings found in file: " + all.size());
+                    
+                    StringBuilder json = new StringBuilder("[");
+                    boolean first = true;
+                    for (Booking b : all) {
+                        System.out.println("DEBUG: Checking booking: ID=" + b.getId() + ", VehicleID=" + b.getVehicleId() + ", Status=" + b.getStatus());
+                        if (b.getVehicleId() == vehicleId && "active".equals(b.getStatus())) {
+                            if (!first) json.append(",");
+                            json.append("{\"from\":\"").append(b.getStartDate()).append("\",\"to\":\"").append(b.getEndDate()).append("\"}");
+                            first = false;
+                            System.out.println("DEBUG: MATCH! Adding range: " + b.getStartDate() + " to " + b.getEndDate());
+                        }
+                    }
+                    json.append("]");
+                    response.setContentType("application/json");
+                    response.getWriter().write(json.toString());
+                    System.out.println("DEBUG: JSON output sent: " + json.toString());
+                } catch (Exception e) {
+                    System.err.println("ERROR in getBookedDates: " + e.getMessage());
+                    e.printStackTrace();
+                    response.setStatus(500);
+                }
+            }
+            return;
+        }
+
         if ("all".equals(action)) {
             List<Booking> list = service.getAllBookings();
             request.setAttribute("bookings", list);

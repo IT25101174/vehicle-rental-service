@@ -5,8 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Vehicle - Intelligent Auto Rentals</title>
-    <link href="https://fonts.googleapis.com/css?family=Syne:wght@700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Book Vehicle — Intelligent Auto Rentals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -212,34 +213,36 @@
                     <input type="text" id="vehicleId" name="vehicleId" readonly style="opacity: 0.6; cursor: not-allowed; border-left: 3px solid var(--gold);">
                 </div>
 
-                <div class="form-group">
-                    <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" name="startDate" required>
-                </div>
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" name="startDate" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="endDate">End Date</label>
-                    <input type="date" id="endDate" name="endDate" required>
-                </div>
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" name="endDate" required>
+            </div>
 
                 <button type="submit" class="btn-submit">Book Now</button>
             </form>
 
-            <div class="back-link">
-                Need a different vehicle? <a href="vehicle?action=list">Browse fleet</a>
-            </div>
+        <div class="back-link">
+            Need a different vehicle? <a href="vehicles.jsp">Browse fleet</a>
         </div>
-    </main>
+    </div>
+</main>
+<script>
+    // 1. Look at the URL for a 'vehicleId'
+    const urlParams = new URLSearchParams(window.location.search);
+    const vehicleId = urlParams.get('vehicleId');
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const vehicleId = urlParams.get('vehicleId');
-        if (vehicleId) {
-            const vehicleInput = document.getElementById('vehicleId');
-            vehicleInput.value = vehicleId;
-            vehicleInput.readOnly = true;
-            vehicleInput.style.opacity = '0.6';
-        }
-    </script>
+    // 2. If we found an ID, put it in the box and lock it!
+    if (vehicleId) {
+        const vehicleInput = document.getElementById('vehicleId');
+        vehicleInput.value = vehicleId;
+        vehicleInput.readOnly = true;
+        vehicleInput.style.opacity = '0.6'; // Dims the box to show it's locked
+    }
+</script>
 </body>
 </html>

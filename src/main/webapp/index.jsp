@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligent Auto Rentals</title>
-    <link href="https://fonts.googleapis.com/css?family=Syne:wght@400;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
@@ -14,7 +14,7 @@
             --border: rgba(255,255,255,0.08);
             --gold: #f0a500;
             --text: #f4f0ea;
-            --muted: #7a7672;
+            --muted: #a1a1aa;
         }
         body {
             background: var(--bg);
@@ -23,6 +23,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
         nav {
             position: sticky;
@@ -32,121 +34,115 @@
             align-items: center;
             justify-content: space-between;
             padding: 1.1rem 6%;
-            background: rgba(9,9,11,0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(9,9,11,0.8);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
         .logo {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 1.2rem;
-            letter-spacing: -0.01em;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
             color: var(--text);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.55rem;
+            gap: 0.6rem;
         }
         .logo-mark {
-            width: 28px; height: 28px;
+            width: 30px; height: 30px;
             background: var(--gold);
-            border-radius: 6px;
+            border-radius: 7px;
             display: grid;
             place-items: center;
         }
-        .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+        .nav-right { display: flex; align-items: center; gap: 1.8rem; }
         .nav-right a {
             text-decoration: none;
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             color: var(--muted);
-            transition: color 0.2s;
+            font-weight: 400;
+            transition: all 0.2s;
         }
-        .nav-right a:hover { color: var(--text); }
+        .nav-right a:hover { color: var(--gold); }
         .nav-cta {
             background: var(--gold) !important;
             color: #000 !important;
-            padding: 0.5rem 1.2rem;
-            border-radius: 6px;
-            font-weight: 500 !important;
-            transition: opacity 0.2s !important;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 600 !important;
+            transition: transform 0.2s, opacity 0.2s !important;
         }
-        .nav-cta:hover { opacity: 0.85 !important; }
+        .nav-cta:hover { opacity: 0.9 !important; transform: translateY(-1px); }
 
-        /* Updated Main Layout for Side-by-Side Viewport */
+        /* Hero Layout */
         main {
             flex: 1;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 5rem 6%;
+            padding: 4rem 6%;
             position: relative;
             overflow: hidden;
         }
         main::before {
             content: "";
             position: absolute;
-            top: 5%;
+            top: -10%;
             left: 50%;
             transform: translateX(-50%);
-            width: 800px; height: 450px;
-            background: radial-gradient(ellipse, rgba(240,165,0,0.09) 0%, transparent 68%);
-            pointer-events: none;
-        }
-        main::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse 80% 65% at 50% 50%, black 30%, transparent 100%);
+            width: 1000px; height: 600px;
+            background: radial-gradient(circle, rgba(240,165,0,0.08) 0%, transparent 70%);
             pointer-events: none;
         }
         .hero-container {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
             align-items: center;
-            justify-content: space-between;
             width: 100%;
             z-index: 2;
-            gap: 2rem;
+            gap: 4rem;
         }
         .hero-inner {
-            max-width: 550px;
             text-align: left;
         }
         .eyebrow {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            border: 1px solid rgba(240,165,0,0.3);
-            background: rgba(240,165,0,0.07);
+            gap: 0.6rem;
+            border: 1px solid rgba(240,165,0,0.25);
+            background: rgba(240,165,0,0.05);
             border-radius: 100px;
-            padding: 0.3rem 0.9rem;
-            font-size: 0.72rem;
-            letter-spacing: 0.14em;
+            padding: 0.4rem 1.1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             color: var(--gold);
-            margin-bottom: 2rem;
-            animation: up 0.6s ease both;
+            margin-bottom: 2.5rem;
+            animation: up 0.8s ease both;
         }
         h2 {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.4rem;
-            animation: up 0.6s 0.08s ease both;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            animation: up 0.8s 0.1s ease both;
         }
-        h2 span { color: var(--gold); }
+        h2 span {
+            background: linear-gradient(135deg, #f0a500 0%, #ffcc33 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         .hero-desc {
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             color: var(--muted);
             font-weight: 300;
-            line-height: 1.75;
-            margin-bottom: 2.8rem;
-            animation: up 0.6s 0.16s ease both;
+            line-height: 1.6;
+            max-width: 500px;
+            margin-bottom: 3rem;
+            animation: up 0.8s 0.2s ease both;
         }
         .hero-buttons {
             display: flex;

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Vehicle — Intelligent Auto Rentals</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Flatpickr for better date selection -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
 
     <style>
         *, *::before, *::after {
@@ -281,12 +284,12 @@
 
             <div class="form-group">
                 <label for="startDate">Start Date</label>
-                <input type="date" id="startDate" name="startDate" required>
+                <input type="text" id="startDate" name="startDate" placeholder="Select start date" required>
             </div>
 
             <div class="form-group">
                 <label for="endDate">End Date</label>
-                <input type="date" id="endDate" name="endDate" required>
+                <input type="text" id="endDate" name="endDate" placeholder="Select end date" required>
             </div>
 
             <button type="submit" class="btn-submit">Book Now</button>
@@ -297,17 +300,58 @@
         </div>
     </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     // 1. Look at the URL for a 'vehicleId'
     const urlParams = new URLSearchParams(window.location.search);
-    const vehicleId = urlParams.get('vehicleId');
+    const vIdFromUrl = urlParams.get('vehicleId');
+    console.log("Captured Vehicle ID from URL:", vIdFromUrl);
 
     // 2. If we found an ID, put it in the box and lock it!
-    if (vehicleId) {
+    if (vIdFromUrl && vIdFromUrl.trim() !== "") {
         const vehicleInput = document.getElementById('vehicleId');
-        vehicleInput.value = vehicleId;
+        vehicleInput.value = vIdFromUrl;
         vehicleInput.readOnly = true;
-        vehicleInput.style.opacity = '0.6'; // Dims the box to show it's locked
+        vehicleInput.style.opacity = '0.6';
+
+        // 3. INITIALIZE FLATPICKR IMMEDIATELY
+        const config = {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            theme: "dark",
+            onChange: function(selectedDates, dateStr, instance) {
+                if (instance.element.id === "startDate") {
+                    endPicker.set("minDate", dateStr);
+                }
+            }
+        };
+
+        const startPicker = flatpickr("#startDate", config);
+        const endPicker = flatpickr("#endDate", config);
+
+        // 4. FETCH BOOKED DATES
+        const fetchUrl = "booking?action=getBookedDates&vehicleId=" + vIdFromUrl;
+        console.log("Fetching booked dates from:", fetchUrl);
+
+        fetch(fetchUrl)
+            .then(res => {
+                if (!res.ok) throw new Error("Server error: " + res.status);
+                return res.json();
+            })
+            .then(bookedDates => {
+                console.log("Booked dates received:", bookedDates);
+                if (bookedDates && bookedDates.length > 0) {
+                    startPicker.set("disable", bookedDates);
+                    endPicker.set("disable", bookedDates);
+                }
+            })
+            .catch(err => {
+                console.error("Fetch failed:", err);
+            });
+    } else {
+        console.warn("No valid Vehicle ID found in URL.");
+        flatpickr("#startDate", { dateFormat: "Y-m-d", minDate: "today" });
+        flatpickr("#endDate", { dateFormat: "Y-m-d", minDate: "today" });
     }
 </script>
 </body>

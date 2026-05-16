@@ -72,4 +72,68 @@ public class UserService {
         }
         return false;
     }
+
+    // 3. login returns the full User object if successful
+    public User validateUser(String email, String password, String filePath) {
+        ArrayList<User> users = getUsers(filePath);
+        for (User u : users) {
+            if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    // 4. getUserById
+    public User getUserById(int id, String filePath) {
+        ArrayList<User> users = getUsers(filePath);
+        for (User u : users) {
+            if (u.getId() == id) {
+                return u;
+            }
+        }
+        return null;
+    }
+
+    // 5. updateUser (UPDATE)
+    public void updateUser(User updatedUser, String filePath) {
+        try {
+            List<String> lines = FileHandler.readAll(filePath);
+            List<String> newLines = new ArrayList<>();
+
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                int userId = Integer.parseInt(parts[0]);
+
+                if (userId == updatedUser.getId()) {
+                    newLines.add(updatedUser.toFileString());
+                } else {
+                    newLines.add(line);
+                }
+            }
+            FileHandler.writeAll(filePath, newLines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 6. deleteUser (DELETE)
+    public void deleteUser(int id, String filePath) {
+        try {
+            List<String> lines = FileHandler.readAll(filePath);
+            List<String> newLines = new ArrayList<>();
+
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                int userId = Integer.parseInt(parts[0]);
+
+                if (userId != id) {
+                    newLines.add(line);
+                }
+            }
+            FileHandler.writeAll(filePath, newLines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

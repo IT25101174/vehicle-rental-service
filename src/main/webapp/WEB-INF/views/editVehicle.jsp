@@ -328,6 +328,37 @@
                        value="<%= vehicle.getPricePerDay() %>" required />
             </div>
 
+            <hr style="border-color: rgba(255,255,255,0.08); margin: 1.5rem 0;" />
+            <p style="font-size: 0.8rem; color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.1em;">Extra Specifications</p>
+
+            <div class="form-group">
+                <label for="fuelType">Fuel Type</label>
+                <input type="text" id="fuelType" name="fuelType" value="<%= vehicle.getDetails() != null && vehicle.getDetails().getFuelType() != null ? vehicle.getDetails().getFuelType() : "" %>" />
+            </div>
+
+            <div class="form-group">
+                <label for="seatingCapacity">Seating Capacity</label>
+                <input type="number" id="seatingCapacity" name="seatingCapacity" value="<%= vehicle.getDetails() != null ? vehicle.getDetails().getSeatingCapacity() : "" %>" />
+            </div>
+
+            <div class="form-group">
+                <label for="hasAc">Air Conditioning</label>
+                <select id="hasAc" name="hasAc">
+                    <option value="true" <%= vehicle.getDetails() != null && vehicle.getDetails().isHasAc() ? "selected" : "" %>>Yes (AC)</option>
+                    <option value="false" <%= vehicle.getDetails() != null && !vehicle.getDetails().isHasAc() ? "selected" : "" %>>No (Non-AC)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="hasGear">Transmission</label>
+                <select id="hasGear" name="hasGear">
+                    <option value="true" <%= vehicle.getDetails() != null && vehicle.getDetails().isHasGear() ? "selected" : "" %>>Manual (Gears)</option>
+                    <option value="false" <%= vehicle.getDetails() != null && !vehicle.getDetails().isHasGear() ? "selected" : "" %>>Auto (No Gears)</option>
+                </select>
+            </div>
+
+            <hr style="border-color: rgba(255,255,255,0.08); margin: 1.5rem 0;" />
+
             <div class="form-group">
                 <label for="available">Availability</label>
                 <select id="available" name="available">

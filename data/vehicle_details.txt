@@ -1,0 +1,4 @@
+2,Petrol,2,false,true
+10,Electric,4,true,false
+3,Petrol,7,true,true
+5,Diesel ,7,true,true

@@ -24,6 +24,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Actions</th>
         </tr>
 
         <%-- This is where the Java Magic happens! --%>
@@ -39,7 +40,12 @@
             <td><%= u.getId() %></td>
             <td><%= u.getName() %></td>
             <td><%= u.getEmail() %></td>
-            <td><strong style="color: <%= u.getRole().equals("admin") ? "red" : "green" %>"><%= u.getRole().toUpperCase() %></strong></td>
+            <% String roleColor = "admin".equalsIgnoreCase(u.getRole()) ? "#f87171" : "#4ade80"; %>
+            <td><strong style="color: <%= roleColor %>;"><%= u.getRole().toUpperCase() %></strong></td>
+            <td>
+                <a href="user?action=edit&id=<%= u.getId() %>" style="color: blue;">Edit</a> |
+                <a href="user?action=delete&id=<%= u.getId() %>" style="color: red;" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+            </td>
         </tr>
         <%
             }

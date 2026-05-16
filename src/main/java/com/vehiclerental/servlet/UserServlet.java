@@ -6,21 +6,22 @@ import com.vehiclerental.service.UserService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.annotation.WebServlet;
 
 import java.io.IOException;
 
-@WebServlet("/register")
+@WebServlet("/user")
 public class UserServlet extends HttpServlet
 {
     UserService service = new UserService();
 
-    // Add this right above or below your doPost method in UserServlet.java
+    // Updated with ServletException for VS Code compilation
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, jakarta.servlet.ServletException {
         String action = request.getParameter("action");
 
         // Grab the same dynamic path we used earlier!
-        String dynamicPath = getServletContext().getRealPath("/data/users.txt");
+        String dynamicPath = "data/users.txt";
 
         if ("listUsers".equals(action)) {
             // 1. Fetch all users from the text file
@@ -30,15 +31,29 @@ public class UserServlet extends HttpServlet
             request.setAttribute("userList", allUsers);
 
             // 3. Forward the truck into the secure WEB-INF vault to the JSP page
-            request.getRequestDispatcher("/WEB-INF/userList.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/userList.jsp").forward(request, response);
+        } else if ("edit".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            User user = service.getUserById(id, dynamicPath);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("/WEB-INF/views/editUser.jsp").forward(request, response);
+        } else if ("delete".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            service.deleteUser(id, dynamicPath);
+        } else if ("logout".equals(action)) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+            response.sendRedirect("index.jsp");
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException
+            throws IOException, jakarta.servlet.ServletException
     {
         String action = request.getParameter("action");
-        String securePath = getServletContext().getRealPath("/WEB-INF/data/users.txt");
+        String securePath = "data/users.txt";
         if ("register".equals(action))
         {
 // We don't grab ID from the form anymore, the Service handles that!
@@ -49,95 +64,52 @@ public class UserServlet extends HttpServlet
 // Grab the missing 5th parameter from the HTML dropdown
             String role = request.getParameter("role");
 
-// Build the User with 5 parameters (passing 0 for the ID placeholder)
-            User user = new User(0, name, email, password, role);
-            service.addUser(user, securePath);
-
-            response.sendRedirect("login.html");
-        }
-        else if ("login".equals(action))
-        {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-
-            boolean ok = service.login(email, password, securePath);
-
-            if (ok)
-                response.getWriter().println("Login Success");
-            else
-                response.getWriter().println("Login Failed");
-        }
-    }
-}
-
-
-/*package com.vehiclerental.servlet;
-
-import com.vehiclerental.model.User;
-import com.vehiclerental.service.UserService;
-
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.annotation.WebServlet;
-
-import java.io.IOException;
-
-@WebServlet("/register")
-public class UserServlet extends HttpServlet {
-
-    UserService service = new UserService();
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, jakarta.servlet.ServletException {
-        String action = request.getParameter("action");
-
-        // FIX 1: Synced this path to match the secure WEB-INF path used in doPost
-        String securePath = getServletContext().getRealPath("/WEB-INF/data/users.txt");
-
-        if ("listUsers".equals(action)) {
-            // 1. Fetch all users from the text file
-            java.util.ArrayList<User> allUsers = service.getUsers(securePath);
-
-            // 2. Attach the list to the request
-            request.setAttribute("userList", allUsers);
-
-            // 3. Forward into the secure WEB-INF vault to the JSP page
-            request.getRequestDispatcher("/WEB-INF/userList.jsp").forward(request, response);
-        }
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String action = request.getParameter("action");
-
-        // Secure text file database location
-        String securePath = getServletContext().getRealPath("/WEB-INF/data/users.txt");
-
-        if ("register".equals(action)) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String role = request.getParameter("role");
-
-            // Build the User with 5 parameters (passing 0 for the ID placeholder)
-            User user = new User(0, name, email, password, role);
-            service.addUser(user, securePath);
-
-            response.sendRedirect("login.html");
-        }
+            com.vehiclerental.model.User newUser = new com.vehiclerental.model.User(0, name, email, password, role);
+            service.addUser(newUser, securePath);
+            
+            response.sendRedirect("login.html?success=true");
+        } 
+        // 2. Handle Login
         else if ("login".equals(action)) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-
-            boolean ok = service.login(email, password, securePath);
-
-            if (ok) {
-                // FIX 2: Routing successful logins to your newly created Admin Dashboard!
-                // Note: Since service.login returns a boolean right now, this sends EVERYONE to the admin dashboard.
-                // Once you update your UserService to return a User object, you can add an if-statement here to check the role!
-                response.sendRedirect("/admin?action=dashboard");
+ 
+            User user = service.validateUser(email, password, securePath);
+ 
+            if (user != null) {
+                // Store user info in session
+                HttpSession session = request.getSession();
+                session.setAttribute("userId", user.getId());
+                session.setAttribute("userName", user.getName());
+                session.setAttribute("role", user.getRole());
+                
+                // Redirect based on role
+                if ("admin".equalsIgnoreCase(user.getRole())) {
+                    // Redirect to the Admin URL instead of forwarding internally
+                    response.sendRedirect("admin?action=dashboard");
+                } else {
+                    // Customers go to the dynamic homepage
+                    response.sendRedirect("index.jsp");
+                }
             } else {
-                response.sendRedirect("login.html?error=true");
+                response.sendRedirect("login.html?error=invalid");
             }
         }
+        else if ("update".equals(action))
+        {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            
+            // To maintain the existing role, fetch the old user first
+            User oldUser = service.getUserById(id, securePath);
+            String role = (oldUser != null) ? oldUser.getRole() : "customer";
+
+            User updatedUser = new User(id, name, email, password, role);
+            service.updateUser(updatedUser, securePath);
+
+            response.sendRedirect("user?action=listUsers");
+        }
     }
-}*/
+}

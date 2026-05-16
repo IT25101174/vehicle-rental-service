@@ -85,20 +85,20 @@
         }
 
         .page-tag {
-            font-size: 0.7rem;
-            letter-spacing: 0.14em;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--gold);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
         }
 
-        h2 {
-            font-family: 'Syne', sans-serif;
+        h2 { 
+            font-family: 'Syne', sans-serif; 
             font-weight: 800;
-            font-size: 2rem;
-            letter-spacing: -0.02em;
+            font-size: clamp(2.2rem, 5vw, 3rem); 
+            line-height: 1.1;
+            letter-spacing: -0.03em;
         }
-
         h2 span { color: var(--gold); }
 
         .btn-new {
@@ -205,7 +205,7 @@
 <body>
 
 <nav>
-    <a href="index.html" class="logo">
+    <a href="index.jsp" class="logo">
         <span class="logo-mark">
             <svg viewBox="0 0 14 14" fill="none">
                 <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -215,8 +215,8 @@
         Intelligent Auto Rentals
     </a>
     <div class="nav-right">
-        <a href="vehicles.jsp">Browse Vehicles</a>
-        <a href="/logout">Logout</a>
+        <a href="vehicle?action=list">Browse Fleet</a>
+        <a href="user?action=logout" style="color: var(--danger);">Logout</a>
     </div>
 </nav>
 
@@ -226,7 +226,7 @@
             <div class="page-tag">Customer Portal</div>
             <h2>My <span>Bookings</span></h2>
         </div>
-        <a href="booking.html" class="btn-new">+ New Booking</a>
+        <a href="booking.jsp" class="btn-new">+ New Booking</a>
     </div>
 
     <%
@@ -247,17 +247,17 @@
                 <span class="card-id">#<%= b.getId() %></span>
                 <span class="status <%= statusClass %>"><%= b.getStatus() %></span>
             </div>
-            <p><b>ID:</b> <%= b.getId() %></p>
-            <p><b>Vehicle:</b> <%= b.getVehicleId() %></p>
-            <p><b>From:</b> <%= b.getStartDate() %></p>
-            <p><b>To:</b> <%= b.getEndDate() %></p>
+            <p><b>Booking ID:</b> <%= b.getId() %></p>
+            <p><b>Vehicle ID:</b> <%= b.getVehicleId() %></p>
+            <p><b>Start Date:</b> <%= b.getStartDate() %></p>
+            <p><b>End Date:</b> <%= b.getEndDate() %></p>
 
                         <a href="booking?action=delete&id=<%= b.getId() %>"
                            style="display: block; text-align: center; margin-top: 1rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
                            onmouseover="this.style.background='rgba(248,113,113,0.1)'"
                            onmouseout="this.style.background='transparent'"
                            onclick="return confirm('Are you sure you want to cancel this booking?');">
-                           Cancel Booking
+                           Cancel Reservation
                         </a>
 
         </div>
@@ -269,7 +269,7 @@
     %>
     <div class="empty-state">
         <p>You have no bookings yet.</p>
-        <a href="booking.html" class="btn-new">Book a Vehicle</a>
+        <a href="booking.jsp" class="btn-new">Book a Vehicle</a>
     </div>
     <% } %>
 </div>

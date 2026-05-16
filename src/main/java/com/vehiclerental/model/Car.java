@@ -19,4 +19,11 @@ public class Car extends Vehicle {
         this.fuelType = fuelType;
     }
 
+    @Override
+    public String getDescription() {
+        if (getDetails() != null) {
+            return "Car: " + getBrand() + " running on " + getDetails().getFuelType() + (getDetails().isHasAc() ? " (AC)" : " (Non-AC)");
+        }
+        return "Car: " + getBrand() + " running on " + fuelType;
+    }
 }

@@ -7,6 +7,7 @@ public class Vehicle {
         private String type;
         private double pricePerDay;
         private boolean available;
+        private VehicleDetails details;
 
         //Default constructor - creates empty vehicle object
         public Vehicle() {
@@ -62,5 +63,18 @@ public class Vehicle {
         //set availability status
         public void setAvailable(boolean available) {
             this.available = available;
+        }
+
+        public VehicleDetails getDetails() {
+            return details;
+        }
+
+        public void setDetails(VehicleDetails details) {
+            this.details = details;
+        }
+
+        // Method to be overridden by subclasses for polymorphism
+        public String getDescription() {
+            return brand + " (" + type + ")";
         }
 }

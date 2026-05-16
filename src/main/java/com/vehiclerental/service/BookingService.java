@@ -13,6 +13,9 @@ public class BookingService {
 
     // CREATE
     public void addBooking(Booking booking) throws IOException {
+        int newId = FileHandler.getNextId(FILE_PATH);
+        booking.setId(newId);
+        
         String line = booking.getId() + "," +
                 booking.getUserId() + "," +
                 booking.getVehicleId() + "," +

@@ -1,3 +1,0 @@
-1,Praveen,praveen@email.com,pass123,customer
-2,Thamira,thamira@email.com,pass456,admin
-3,Ihjas,ihjas@email.com,pass789,customer

@@ -5,11 +5,15 @@ import com.vehiclerental.model.Vehicle; //vehicle objects
 import java.io.IOException; // catch the file errors
 import java.util.ArrayList; // create resizable list
 import java.util.List; // declare the list type
+import com.vehiclerental.service.VehicleDetailsService;
+import com.vehiclerental.model.Car;
+import com.vehiclerental.model.Bike;
+import com.vehiclerental.model.Van;
 
     public class VehicleService {
 
         // path to the text file where vehicle records are stored
-        private final String filePath = "src/main/webapp/WEB-INF/data/vehicles.txt";
+        private final String filePath = "data/vehicles.txt";
 
         // Add Vehicle (CREATE)
         public void addVehicle(Vehicle vehicle) {
@@ -36,6 +40,7 @@ import java.util.List; // declare the list type
         // Get All Vehicles (READ)
         public List<Vehicle> getAllVehicles() {
             List<Vehicle> vehicles = new ArrayList<>();
+            VehicleDetailsService detailsService = new VehicleDetailsService();
 
             try {
                 // read all lines from the file
@@ -44,13 +49,33 @@ import java.util.List; // declare the list type
                 for (String line : lines) {
                     String[] parts = line.split(",");
 
-                    Vehicle v = new Vehicle(
-                            Integer.parseInt(parts[0]),  // id
-                            parts[1],                   // brand
-                            parts[2],                   // type
-                            Double.parseDouble(parts[3]), // price per day
-                            Boolean.parseBoolean(parts[4]) // available
-                    );
+                    String type = parts[2];
+                    Vehicle v;
+                    
+                    if (type.equalsIgnoreCase("Car")) {
+                        v = new Car(
+                                Integer.parseInt(parts[0]), parts[1], type, 
+                                Double.parseDouble(parts[3]), Boolean.parseBoolean(parts[4]), "Petrol/Diesel"
+                        );
+                    } else if (type.equalsIgnoreCase("Bike")) {
+                        v = new Bike(
+                                Integer.parseInt(parts[0]), parts[1], type, 
+                                Double.parseDouble(parts[3]), Boolean.parseBoolean(parts[4]), true
+                        );
+                    } else if (type.equalsIgnoreCase("Van")) {
+                        v = new Van(
+                                Integer.parseInt(parts[0]), parts[1], type, 
+                                Double.parseDouble(parts[3]), Boolean.parseBoolean(parts[4]), 14
+                        );
+                    } else {
+                        v = new Vehicle(
+                                Integer.parseInt(parts[0]), parts[1], type, 
+                                Double.parseDouble(parts[3]), Boolean.parseBoolean(parts[4])
+                        );
+                    }
+
+                    // Attach details from the second file
+                    v.setDetails(detailsService.getDetailsByVehicleId(v.getId()));
 
                     vehicles.add(v);
                 }

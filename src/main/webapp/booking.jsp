@@ -1,3 +1,4 @@
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -260,14 +261,22 @@
                 <label for="vehicleId">Vehicle ID</label>
                 <input type="text" id="vehicleId" name="vehicleId" placeholder="Enter vehicle ID" required>
             </div>-->
+            <% 
+                Integer sessionUserId = (Integer) session.getAttribute("userId");
+                String userName = (String) session.getAttribute("userName");
+                if (sessionUserId == null) {
+                    response.sendRedirect("login.html");
+                }
+            %>
             <div class="form-group">
-                <label for="userId">User ID</label>
-                <input type="text" id="userId" name="userId" value="2" readonly style="opacity: 0.6; cursor: not-allowed;">
+                <label>Booking For</label>
+                <div style="font-size: 1.1rem; color: var(--gold); font-weight: 500; margin-bottom: 0.5rem;"><%= userName %></div>
+                <input type="hidden" name="userId" value="<%= sessionUserId %>">
             </div>
 
             <div class="form-group">
                 <label for="vehicleId">Vehicle ID</label>
-                <input type="text" id="vehicleId" name="vehicleId" readonly style="opacity: 0.6; cursor: not-allowed;">
+                <input type="text" id="vehicleId" name="vehicleId" readonly style="opacity: 0.6; cursor: not-allowed; border-left: 3px solid var(--gold);">
             </div>
 
             <div class="form-group">

@@ -19,4 +19,11 @@ public class Bike extends Vehicle {
         this.hasGear = hasGear;
     }
 
+    @Override
+    public String getDescription() {
+        if (getDetails() != null) {
+            return "Bike: " + getBrand() + (getDetails().isHasGear() ? " with gears" : " without gears");
+        }
+        return "Bike: " + getBrand() + (hasGear ? " with gears" : " without gears");
+    }
 }

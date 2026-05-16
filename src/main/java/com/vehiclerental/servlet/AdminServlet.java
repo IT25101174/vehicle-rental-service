@@ -1,8 +1,8 @@
 package com.vehiclerental.servlet;
 
 import com.vehiclerental.model.User;
-import com.vehiclerental.service.AdminService;
-
+import com.vehiclerental.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,10 +14,11 @@ import java.io.IOException;
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
 
-    // Initialize your new service
-    AdminService adminService = new AdminService();
+    // Use the unified UserService instead of AdminService
+    UserService userService = new UserService();
 
     // Handles Viewing Pages (The Dashboard)
+    // Added ServletException for VS Code
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
@@ -27,14 +28,11 @@ public class AdminServlet extends HttpServlet {
     }
 
     // Handles Form Submissions (Login and Register)
+    // Added ServletException for VS Code
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        /*String securePath = getServletContext().getRealPath("/WEB-INF/data/users.txt");*/
-        // Grabs the exact folder location of your project on your hard drive
-        String projectRoot = System.getProperty("user.dir");
-
-// Forces Java to write directly into your actual source code folder!
-        String securePath = projectRoot + "/src/main/webapp/WEB-INF/data/users.txt";
+        // Unified project-wide user storage
+        String securePath = "data/users.txt";
 
         // 1. Handle Admin Registration
         if ("adminRegister".equals(action)) {
@@ -44,7 +42,8 @@ public class AdminServlet extends HttpServlet {
             String role = request.getParameter("role"); // Claude hardcoded this to "admin"
 
             User newAdmin = new User(0, name, email, password, role);
-            adminService.addAdmin(newAdmin, securePath);
+            // Updated to use userService
+            userService.addUser(newAdmin, securePath);
 
             // Send them to the login page after registering
             response.sendRedirect("adminLogin.html");
@@ -54,15 +53,21 @@ public class AdminServlet extends HttpServlet {
         else if ("adminLogin".equals(action)) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
+ 
+            // Use the unified validateUser method
+            User admin = userService.validateUser(email, password, securePath);
+ 
+            if (admin != null && "admin".equalsIgnoreCase(admin.getRole())) {
+                // SUCCESS: Set up the session properly
+                HttpSession session = request.getSession();
+                session.setAttribute("userId", admin.getId());
+                session.setAttribute("userName", admin.getName());
+                session.setAttribute("role", admin.getRole());
 
-            // Use the strict admin-only check
-            boolean isAuthenticated = adminService.authenticateAdmin(email, password, securePath);
-
-            if (isAuthenticated) {
-                // Success! Route to the dashboard via doGet
-                response.sendRedirect("/admin?action=dashboard");
+                // Route to the dashboard
+                response.sendRedirect("admin?action=dashboard");
             } else {
-                // Failed! Send back to the custom login page with the error flag Claude built
+                // Failed! Send back to the login page with error flag
                 response.sendRedirect("adminLogin.html?error=true");
             }
         }

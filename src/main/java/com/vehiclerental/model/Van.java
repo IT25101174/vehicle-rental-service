@@ -19,4 +19,11 @@ public class Van extends Vehicle {
         this.seatingCapacity = seatingCapacity;
     }
 
+    @Override
+    public String getDescription() {
+        if (getDetails() != null) {
+            return "Van: " + getBrand() + " with " + getDetails().getSeatingCapacity() + " seats" + (getDetails().isHasAc() ? " (AC)" : "");
+        }
+        return "Van: " + getBrand() + " with " + seatingCapacity + " seats";
+    }
 }

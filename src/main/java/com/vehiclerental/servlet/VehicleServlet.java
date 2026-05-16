@@ -1,7 +1,9 @@
 package com.vehiclerental.servlet;
 
 import com.vehiclerental.model.Vehicle; //create vehicle objects
+import com.vehiclerental.model.VehicleDetails;
 import com.vehiclerental.service.VehicleService; //call service methods
+import com.vehiclerental.service.VehicleDetailsService;
 
 import jakarta.servlet.ServletException; //handle servlet errors
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +17,14 @@ import java.util.List; //store vehicle list
     @WebServlet("/vehicle")
     public class VehicleServlet extends HttpServlet {
 
-        private VehicleService vehicleService = new VehicleService();
+        private VehicleService vehicleService;
+        private VehicleDetailsService detailsService;
+
+        @Override
+        public void init() {
+            vehicleService = new VehicleService();
+            detailsService = new VehicleDetailsService();
+        }
 
         // Handles GET requests (view, edit, delete, search)
         @Override
@@ -35,14 +44,16 @@ import java.util.List; //store vehicle list
 
                 //List all vehicles
                 case "list":
-                    List<Vehicle> vehicles = vehicleService.getAllVehicles();
-
-                    // Send vehicle list to JSP page
-                    request.setAttribute("vehicles", vehicles);
-
-                    // Forward request to vehicles.jsp
-                    request.getRequestDispatcher("/WEB-INF/views/vehicles.jsp")
-                            .forward(request, response);
+                    List<Vehicle> vehiclesList = vehicleService.getAllVehicles();
+                    request.setAttribute("vehicles", vehiclesList);
+ 
+                    // Detect role and forward to the correct view
+                    String userRole = (String) request.getSession().getAttribute("role");
+                    if ("admin".equalsIgnoreCase(userRole)) {
+                        request.getRequestDispatcher("/WEB-INF/views/vehicles.jsp").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/WEB-INF/views/catalog.jsp").forward(request, response);
+                    }
                     break;
 
                 // Edit vehicle(show form)
@@ -74,16 +85,16 @@ import java.util.List; //store vehicle list
                 //Search vehicles
                 case "search":
                     String keyword = request.getParameter("keyword");
-
-                    // Search vehicles
                     List<Vehicle> searchResults = vehicleService.searchVehicles(keyword);
-
-                    // Send results to JSP page
                     request.setAttribute("vehicles", searchResults);
-
-                    // Forward results to vehicles.jsp
-                    request.getRequestDispatcher("/WEB-INF/views/vehicles.jsp")
-                            .forward(request, response);
+ 
+                    // Role detection for search results too
+                    String sRole = (String) request.getSession().getAttribute("role");
+                    if ("admin".equalsIgnoreCase(sRole)) {
+                        request.getRequestDispatcher("/WEB-INF/views/vehicles.jsp").forward(request, response);
+                    } else {
+                        request.getRequestDispatcher("/WEB-INF/views/catalog.jsp").forward(request, response);
+                    }
                     break;
 
                 // Default
@@ -119,6 +130,15 @@ import java.util.List; //store vehicle list
 
                     // Save new vehicle into file
                     vehicleService.addVehicle(newVehicle);
+                    
+                    String fuelType = request.getParameter("fuelType");
+                    int seatingCapacity = 0;
+                    try { seatingCapacity = Integer.parseInt(request.getParameter("seatingCapacity")); } catch(Exception e){}
+                    boolean hasAc = Boolean.parseBoolean(request.getParameter("hasAc"));
+                    boolean hasGear = Boolean.parseBoolean(request.getParameter("hasGear"));
+                    
+                    VehicleDetails details = new VehicleDetails(newVehicle.getId(), fuelType, seatingCapacity, hasAc, hasGear);
+                    detailsService.saveDetails(details);
 
                     // Redirect to list page after adding
                     response.sendRedirect("vehicle?action=list");
@@ -137,6 +157,15 @@ import java.util.List; //store vehicle list
 
                     // Update record in file
                     vehicleService.updateVehicle(updatedVehicle);
+                    
+                    String uFuelType = request.getParameter("fuelType");
+                    int uSeatingCapacity = 0;
+                    try { uSeatingCapacity = Integer.parseInt(request.getParameter("seatingCapacity")); } catch(Exception e){}
+                    boolean uHasAc = Boolean.parseBoolean(request.getParameter("hasAc"));
+                    boolean uHasGear = Boolean.parseBoolean(request.getParameter("hasGear"));
+
+                    VehicleDetails uDetails = new VehicleDetails(id, uFuelType, uSeatingCapacity, uHasAc, uHasGear);
+                    detailsService.saveDetails(uDetails);
 
                     // Redirect back to list page
                     response.sendRedirect("vehicle?action=list");

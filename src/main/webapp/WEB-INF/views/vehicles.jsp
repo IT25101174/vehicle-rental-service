@@ -103,8 +103,9 @@
         .page-title {
             font-family: 'Syne', sans-serif;
             font-weight: 800;
-            font-size: 2rem;
-            letter-spacing: -0.02em;
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
         }
 
         .btn-add {
@@ -261,7 +262,7 @@
     </a>
     <div class="nav-right">
         <a href="adminDashboard.jsp">Dashboard</a>
-        <a href="/logout">Logout</a>
+        <a href="user?action=logout" style="color: var(--danger);">Logout</a>
     </div>
 </nav>
 
@@ -271,7 +272,7 @@
             <div class="page-tag">Fleet Management</div>
             <h1 class="page-title">Vehicle List</h1>
         </div>
-        <a href="../addVehicle.html" class="btn-add">+ Add New Vehicle</a>
+        <a href="../add-vehicle.html" class="btn-add">+ Add New Vehicle</a>
     </div>
 
     <div class="table-wrap">
@@ -281,6 +282,7 @@
                     <th>ID</th>
                     <th>Brand</th>
                     <th>Type</th>
+                    <th>Specifications</th>
                     <th>Price Per Day</th>
                     <th>Available</th>
                     <th>Actions</th>
@@ -297,6 +299,16 @@
                     <td class="td-id">#<%= v.getId() %></td>
                     <td class="td-brand"><%= v.getBrand() %></td>
                     <td><span class="badge badge-type"><%= v.getType() %></span></td>
+                    <td style="font-size: 0.8rem; color: var(--muted); line-height: 1.4;">
+                        <% if (v.getDetails() != null) { %>
+                            Fuel: <span style="color: var(--text)"><%= v.getDetails().getFuelType() %></span><br>
+                            Seats: <span style="color: var(--text)"><%= v.getDetails().getSeatingCapacity() %></span><br>
+                            AC: <span style="color: var(--text)"><%= v.getDetails().isHasAc() ? "Yes" : "No" %></span><br>
+                            Trans: <span style="color: var(--text)"><%= v.getDetails().isHasGear() ? "Manual" : "Auto" %></span>
+                        <% } else { %>
+                            <span style="opacity: 0.5;">N/A</span>
+                        <% } %>
+                    </td>
                     <td class="td-price">LKR <%= v.getPricePerDay() %></td>
                     <td>
                         <% if (v.isAvailable()) { %>
@@ -319,7 +331,7 @@
                 } else {
             %>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div class="empty-state">No vehicles found.</div>
                     </td>
                 </tr>

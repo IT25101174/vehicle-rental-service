@@ -1,4 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    String sessionRole = (String) session.getAttribute("role");
+    if ("admin".equalsIgnoreCase(sessionRole)) {
+        response.sendRedirect("admin?action=dashboard");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

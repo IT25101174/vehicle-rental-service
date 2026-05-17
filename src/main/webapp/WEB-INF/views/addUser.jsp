@@ -1,13 +1,10 @@
-<%@ page import="com.vehiclerental.model.User" %>
-<%
-    User user = (User) request.getAttribute("user");
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit User Account — Admin Portal</title>
+    <title>Create New User Account — Admin Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -156,7 +153,6 @@
             box-shadow: 0 0 0 3px rgba(240,165,0,0.08);
         }
 
-
         .btn-submit {
             width: 100%;
             background: var(--gold);
@@ -215,40 +211,38 @@
 <main>
     <div class="card">
         <div class="card-header">
-            <div class="card-tag">Account Modification</div>
-            <h1 class="card-title">Edit User</h1>
-            <p class="card-sub">Modify account attributes for User #<%= user.getId() %> below.</p>
+            <div class="card-tag">Account Registration</div>
+            <h1 class="card-title">Add User</h1>
+            <p class="card-sub">Create a new system user or administrator account.</p>
         </div>
 
         <form action="user" method="post">
-            <input type="hidden" name="action" value="update">
-            <input type="hidden" name="id" value="<%= user.getId() %>">
+            <input type="hidden" name="action" value="adminAddUser">
 
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" value="<%= user.getName() %>" required>
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="User's full name" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" value="<%= user.getEmail() %>" required>
+                <input type="email" id="email" name="email" placeholder="user@example.com" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="text" id="password" name="password" value="<%= user.getPassword() %>" required>
+                <input type="text" id="password" name="password" placeholder="Temporary or secure password" required>
             </div>
 
             <div class="form-group">
                 <label for="role">System Role</label>
                 <select id="role" name="role" required>
-                    <option value="customer" <%= "customer".equalsIgnoreCase(user.getRole()) ? "selected" : "" %>>Customer</option>
-                    <option value="admin" <%= "admin".equalsIgnoreCase(user.getRole()) ? "selected" : "" %>>Administrator</option>
+                    <option value="customer" selected>Customer</option>
+                    <option value="admin">Administrator</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-submit">Save Changes</button>
-
+            <button type="submit" class="btn-submit">Register Account</button>
         </form>
 
         <div class="back-link">

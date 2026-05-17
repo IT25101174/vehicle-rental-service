@@ -67,7 +67,8 @@ public class UserServlet extends HttpServlet
 // Grab the missing 5th parameter from the HTML dropdown
             String role = request.getParameter("role");
 
-            com.vehiclerental.model.User newUser = new com.vehiclerental.model.User(0, name, email, password, role);
+            // Encapsulated polymorphic creation using Factory Pattern
+            User newUser = User.createUser(0, name, email, password, role);
             service.addUser(newUser, securePath);
             
             response.sendRedirect("login.html?success=true");
@@ -86,14 +87,8 @@ public class UserServlet extends HttpServlet
                 session.setAttribute("userName", user.getName());
                 session.setAttribute("role", user.getRole());
                 
-                // Redirect based on role
-                if ("admin".equalsIgnoreCase(user.getRole())) {
-                    // Redirect to the Admin URL instead of forwarding internally
-                    response.sendRedirect("admin?action=dashboard");
-                } else {
-                    // Customers go to the dynamic homepage
-                    response.sendRedirect("index.jsp");
-                }
+                // Redirect based on role polymorphically! (Abstraction in action)
+                response.sendRedirect(user.getDashboardRedirectURL());
             } else {
                 response.sendRedirect("login.html?error=invalid");
             }
@@ -111,7 +106,7 @@ public class UserServlet extends HttpServlet
                 role = (oldUser != null) ? oldUser.getRole() : "customer";
             }
 
-            User updatedUser = new User(id, name, email, password, role);
+            User updatedUser = User.createUser(id, name, email, password, role);
             service.updateUser(updatedUser, securePath);
 
             response.sendRedirect("user?action=listUsers");
@@ -123,7 +118,7 @@ public class UserServlet extends HttpServlet
             String password = request.getParameter("password");
             String role = request.getParameter("role");
 
-            com.vehiclerental.model.User newUser = new com.vehiclerental.model.User(0, name, email, password, role);
+            User newUser = User.createUser(0, name, email, password, role);
             service.addUser(newUser, securePath);
             
             response.sendRedirect("user?action=listUsers");

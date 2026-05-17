@@ -19,4 +19,9 @@ public class AdminUser extends User {
     public void manageSystem() {
         System.out.println("Admin " + getName() + " is managing the system.");
     }
+
+    @Override
+    public String getDashboardRedirectURL() {
+        return "admin?action=dashboard";
+    }
 }

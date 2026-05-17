@@ -41,7 +41,7 @@ public class AdminServlet extends HttpServlet {
             String password = request.getParameter("password");
             String role = request.getParameter("role"); // Claude hardcoded this to "admin"
 
-            User newAdmin = new User(0, name, email, password, role);
+            User newAdmin = User.createUser(0, name, email, password, role);
             // Updated to use userService
             userService.addUser(newAdmin, securePath);
 

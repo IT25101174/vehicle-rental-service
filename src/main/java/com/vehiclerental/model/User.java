@@ -1,6 +1,6 @@
 package com.vehiclerental.model;
 
-public class User
+public abstract class User
 {
     //Instance Variables
     protected int id;
@@ -20,6 +20,18 @@ public class User
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    // Abstract method to demonstrate Abstraction & Polymorphism
+    public abstract String getDashboardRedirectURL();
+
+    // Static Factory Method for encapsulated polymorphic instantiation
+    public static User createUser(int id, String name, String email, String password, String role) {
+        if ("admin".equalsIgnoreCase(role)) {
+            return new AdminUser(id, name, email, password, "SystemAdmin");
+        } else {
+            return new CustomerUser(id, name, email, password, "Standard");
+        }
     }
 
 

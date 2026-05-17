@@ -37,4 +37,9 @@ public class CustomerUser extends User
     {
         System.out.println("Customer " + getName() + " is booking a vehicle.");
     }
+
+    @Override
+    public String getDashboardRedirectURL() {
+        return "index.jsp";
+    }
 }

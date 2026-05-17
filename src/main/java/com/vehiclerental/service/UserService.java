@@ -41,8 +41,8 @@ public class UserService {
             for (String line : lines) {
                 String[] data = line.split(",");
 
-                // Rebuild the User object (Now with 5 parameters)
-                User user = new User(
+                // Rebuild the User object polymorphically using the Factory Pattern
+                User user = User.createUser(
                         Integer.parseInt(data[0]),
                         data[1],
                         data[2],

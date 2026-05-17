@@ -8,6 +8,6 @@ public class PublicReview extends Review {
 
     @Override
     public String displayReview() {
-        return "[Public] User " + getUserId() + " says: " + getComment();
+        return "[Public] User " + getUserName() + " says: " + getComment();
     }
 }

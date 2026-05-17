@@ -157,6 +157,10 @@
                         <div class="price">LKR <%= v.getPricePerDay() %> <span>/ day</span></div>
                         <a href="booking.jsp?vehicleId=<%= v.getId() %>" class="btn-rent">Rent Now</a>
                     </div>
+                    <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
+                        <a href="review?action=list&vehicleId=<%= v.getId() %>" style="color: var(--gold); text-decoration: none; font-size: 0.82rem; font-weight: 500;">★ View Reviews</a>
+                        <a href="review?action=addForm&vehicleId=<%= v.getId() %>" style="color: var(--muted); text-decoration: none; font-size: 0.82rem;">+ Write Review</a>
+                    </div>
                 </div>
             </div>
         <% 

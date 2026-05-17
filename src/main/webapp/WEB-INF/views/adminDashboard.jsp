@@ -52,6 +52,12 @@
                 <span class="card-name">Vehicle Categories</span>
                 <p class="card-desc">Define dynamic categories and filter options for browsing the catalog.</p>
             </a>
+
+            <a href="review?action=adminList" class="card">
+                <span class="card-tag">Feedback</span>
+                <span class="card-name">Customer Reviews</span>
+                <p class="card-desc">Monitor customer reviews, moderate comments, and track ratings.</p>
+            </a>
         </div>
 
         <a href="user?action=logout" class="logout">← Logout and return to site</a>

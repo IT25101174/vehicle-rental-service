@@ -1,3 +1,4 @@
 id, userId, vehicleId, rating, comment, type
 1,2,3,5,Great vehicle very clean,verified
 2,1,4,3,It was okay,public
+3,2,2,3,I like the bike,public

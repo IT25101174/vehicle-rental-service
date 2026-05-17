@@ -1,53 +1,120 @@
 package com.vehiclerental.servlet;
 
 import com.vehiclerental.model.Review;
+import com.vehiclerental.model.Vehicle;
 import com.vehiclerental.service.ReviewService;
+import com.vehiclerental.service.VehicleService;
+
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-        import java.io.IOException;
+import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/review")
 public class ReviewServlet extends HttpServlet {
 
-    ReviewService reviewService = new ReviewService();
+    private ReviewService reviewService = new ReviewService();
+    private VehicleService vehicleService = new VehicleService();
 
-    // doGet = when someone visits the page to VIEW reviews
+    // HANDLE POST
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String vehicleIdStr = request.getParameter("vehicleId");
-        List<Review> reviews;
-        if (vehicleIdStr != null) {
-            reviews = reviewService.getReviewsByVehicle(Integer.parseInt(vehicleIdStr));
-        } else {
-            reviews = reviewService.getAllReviews();
-        }
-        request.setAttribute("reviews", reviews);
-        try {
-            request.getRequestDispatcher("/WEB-INF/views/viewReviews.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        String action = request.getParameter("action");
+
+        if ("add".equals(action)) {
+            try {
+                // Enforce active session validation
+                HttpSession session = request.getSession(false);
+                if (session == null || session.getAttribute("userId") == null) {
+                    response.sendRedirect("login.html?error=required");
+                    return;
+                }
+
+                int userId = (Integer) session.getAttribute("userId");
+                int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+                int rating = Integer.parseInt(request.getParameter("rating"));
+                String comment = request.getParameter("comment");
+
+                reviewService.addReview(userId, vehicleId, rating, comment);
+                response.sendRedirect("review?action=list&vehicleId=" + vehicleId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect("index.jsp");
+            }
+        } 
+        else if ("delete".equals(action)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            reviewService.deleteReview(id);
+            response.sendRedirect("review?action=adminList");
         }
     }
 
-    // doPost = when someone SUBMITS the form to add a review
+    // HANDLE GET
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
         String action = request.getParameter("action");
-
-        if ("delete".equals(action)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            reviewService.deleteReview(id);
-        } else {
-            // Default: add a new review
-            int userId = Integer.parseInt(request.getParameter("userId"));
-            int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
-            int rating = Integer.parseInt(request.getParameter("rating"));
-            String comment = request.getParameter("comment");
-            String type = request.getParameter("type");
-            reviewService.addReview(userId, vehicleId, rating, comment, type);
+        if (action == null) {
+            action = "list";
         }
 
-        response.sendRedirect("/review");
+        switch (action) {
+            case "list":
+                try {
+                    String vehicleIdStr = request.getParameter("vehicleId");
+                    List<Review> reviews;
+                    if (vehicleIdStr != null && !vehicleIdStr.isEmpty()) {
+                        int vehicleId = Integer.parseInt(vehicleIdStr);
+                        reviews = reviewService.getReviewsByVehicle(vehicleId);
+                        Vehicle vehicle = vehicleService.getVehicleById(vehicleId);
+                        request.setAttribute("vehicle", vehicle);
+                    } else {
+                        reviews = reviewService.getAllReviews();
+                    }
+                    request.setAttribute("reviews", reviews);
+                    request.getRequestDispatcher("/WEB-INF/views/viewReviews.jsp").forward(request, response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.sendRedirect("index.jsp");
+                }
+                break;
+
+            case "adminList":
+                try {
+                    List<Review> reviews = reviewService.getAllReviews();
+                    request.setAttribute("reviews", reviews);
+                    request.getRequestDispatcher("/WEB-INF/views/adminReviews.jsp").forward(request, response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.sendRedirect("index.jsp");
+                }
+                break;
+
+            case "addForm":
+                try {
+                    // Enforce login validation for accessing reviews form!
+                    HttpSession session = request.getSession(false);
+                    if (session == null || session.getAttribute("userId") == null) {
+                        response.sendRedirect("login.html?error=required");
+                        return;
+                    }
+
+                    int vehicleId = Integer.parseInt(request.getParameter("vehicleId"));
+                    Vehicle vehicle = vehicleService.getVehicleById(vehicleId);
+                    request.setAttribute("vehicle", vehicle);
+                    request.getRequestDispatcher("/WEB-INF/views/addReview.jsp").forward(request, response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.sendRedirect("index.jsp");
+                }
+                break;
+
+            default:
+                response.sendRedirect("review?action=list");
+        }
     }
 }

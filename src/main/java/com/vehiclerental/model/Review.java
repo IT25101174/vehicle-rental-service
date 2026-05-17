@@ -8,33 +8,89 @@ public class Review {
     private int rating;
     private String comment;
     private String type;
+    private String userName; // Dynamically resolved!
 
-    // Constructor
+    // Constructor with built-in comma sanitization & User name dynamic database lookup!
     public Review(int id, int userId, int vehicleId, int rating, String comment, String type) {
         this.id = id;
         this.userId = userId;
         this.vehicleId = vehicleId;
         this.rating = rating;
-        this.comment = comment;
-        this.type = type;
+        this.comment = comment != null ? comment.replace(",", ";") : "";
+        this.type = type != null ? type : "public";
+
+        // Dynamic database lookup to resolve User Name from ID!
+        this.userName = "User #" + userId;
+        try {
+            com.vehiclerental.service.UserService userService = new com.vehiclerental.service.UserService();
+            com.vehiclerental.model.User user = userService.getUserById(userId, "data/users.txt");
+            if (user != null) {
+                this.userName = user.getName();
+            }
+        } catch (Exception e) {
+            // Keep safe fallback "User #id"
+        }
     }
 
     // Getters and setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
-    public int getVehicleId() { return vehicleId; }
-    public void setVehicleId(int vehicleId) { this.vehicleId = vehicleId; }
-    public int getRating() { return rating; }
-    public void setRating(int rating) { this.rating = rating; }
-    public String getComment() { return comment; }
-    public void setComment(String comment) { this.comment = comment; }
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public int getId() { 
+        return id; 
+    }
+    
+    public void setId(int id) { 
+        this.id = id; 
+    }
+    
+    public int getUserId() { 
+        return userId; 
+    }
+    
+    public void setUserId(int userId) { 
+        this.userId = userId; 
+    }
+    
+    public int getVehicleId() { 
+        return vehicleId; 
+    }
+    
+    public void setVehicleId(int vehicleId) { 
+        this.vehicleId = vehicleId; 
+    }
+    
+    public int getRating() { 
+        return rating; 
+    }
+    
+    public void setRating(int rating) { 
+        this.rating = rating; 
+    }
+    
+    public String getComment() { 
+        return comment; 
+    }
+    
+    public void setComment(String comment) { 
+        this.comment = comment != null ? comment.replace(",", ";") : ""; 
+    }
+    
+    public String getType() { 
+        return type; 
+    }
+    
+    public void setType(String type) { 
+        this.type = type; 
+    }
 
-    // This method will be overridden in subclasses (polymorphism!)
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    // Dynamic Polymorphic Method — Overridden by concrete subclasses
     public String displayReview() {
-        return "Review by User " + userId + ": " + comment + " (" + rating + "/5)";
+        return "Review by " + userName + ": " + comment + " (" + rating + "/5 stars)";
     }
 }

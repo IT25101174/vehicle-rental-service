@@ -8,6 +8,6 @@ public class VerifiedReview extends Review {
 
     @Override
     public String displayReview() {
-        return "[✓ Verified Renter] User " + getUserId() + " rated " + getRating() + "/5: " + getComment();
+        return "[✓ Verified Renter] User " + getUserName() + " rated " + getRating() + "/5: " + getComment();
     }
 }

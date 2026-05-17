@@ -1,13 +1,14 @@
 package com.vehiclerental.servlet;
 
+import com.vehiclerental.model.Category;
 import com.vehiclerental.service.CategoryService;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet; // Added this import
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
-// Added the WebServlet annotation so the HTML forms can actually find it!
 @WebServlet("/category")
 public class CategoryServlet extends HttpServlet {
 
@@ -24,30 +25,60 @@ public class CategoryServlet extends HttpServlet {
             String desc = request.getParameter("desc");
 
             service.addCategory(name, desc);
-
-            // FIX: Send the user back to the dashboard after adding!
-            // (Punara might need to change this URL depending on what he named his HTML/JSP file)
-            response.sendRedirect("addCategory.html?success=true");
+            response.sendRedirect("category?action=list");
         }
-
         else if ("update".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String desc = request.getParameter("desc");
 
             service.update(id, name, desc);
-
-            // FIX: Send the user back after updating!
-            response.sendRedirect("viewCategories.html?updated=true");
+            response.sendRedirect("category?action=list");
         }
     }
 
-    // HANDLE GET (view data)
+    // HANDLE GET (view pages & actions)
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Note for Punara: This just dumps text to the screen for testing.
-        // Later, you need to use request.setAttribute() and forward to a JSP page!
-        response.getWriter().println(service.getAll());
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "list";
+        }
+
+        switch (action) {
+            case "list":
+                List<Category> categories = service.getAll();
+                request.setAttribute("categories", categories);
+                request.getRequestDispatcher("/WEB-INF/views/categoryList.jsp").forward(request, response);
+                break;
+
+            case "addForm":
+                request.getRequestDispatcher("/WEB-INF/views/addCategory.jsp").forward(request, response);
+                break;
+
+            case "editForm":
+                int id = Integer.parseInt(request.getParameter("id"));
+                Category category = service.getById(id);
+                request.setAttribute("category", category);
+                request.getRequestDispatcher("/WEB-INF/views/editCategory.jsp").forward(request, response);
+                break;
+
+            case "delete":
+                try {
+                    int deleteId = Integer.parseInt(request.getParameter("id"));
+                    service.delete(deleteId);
+                    response.sendRedirect("category?action=list");
+                } catch (IllegalStateException e) {
+                    // Catch referential integrity exceptions and report to user!
+                    request.setAttribute("error", e.getMessage());
+                    request.setAttribute("categories", service.getAll());
+                    request.getRequestDispatcher("/WEB-INF/views/categoryList.jsp").forward(request, response);
+                }
+                break;
+
+            default:
+                response.sendRedirect("category?action=list");
+        }
     }
 }

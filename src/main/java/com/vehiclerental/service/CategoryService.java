@@ -16,15 +16,14 @@ public class CategoryService {
     // CREATE → add new category
     public void addCategory(String name, String desc) throws IOException {
         int id = FileHandler.getNextId(path); // generate ID
-
         Category c = new Category(id, name, desc);
 
         // save to file
         FileHandler.appendLine(path, c.toFileString());
     }
+
     // READ → get all categories
     public List<Category> getAll() throws IOException {
-
         List<String> lines = FileHandler.readAll(path);
         List<Category> list = new ArrayList<>();
 
@@ -38,12 +37,10 @@ public class CategoryService {
 
     // UPDATE → update category
     public void update(int id, String name, String desc) throws IOException {
-
         List<String> lines = FileHandler.readAll(path);
         List<String> updated = new ArrayList<>();
 
         for (String line : lines) {
-
             Category c = Category.fromString(line);
 
             if (c.getId() == id) {
@@ -58,14 +55,27 @@ public class CategoryService {
         FileHandler.writeAll(path, updated);
     }
 
-    // DELETE → delete category
+    // DELETE → delete category with Referential Integrity check!
     public void delete(int id) throws IOException {
+        Category targetCategory = getById(id);
+        if (targetCategory == null) {
+            return;
+        }
+
+        // Integrity Check: Ensure no active vehicle is registered under this category!
+        com.vehiclerental.service.VehicleService vehicleService = new com.vehiclerental.service.VehicleService();
+        List<com.vehiclerental.model.Vehicle> activeVehicles = vehicleService.getAllVehicles();
+        for (com.vehiclerental.model.Vehicle vehicle : activeVehicles) {
+            if (vehicle.getType().equalsIgnoreCase(targetCategory.getName())) {
+                throw new IllegalStateException("Cannot delete Category '" + targetCategory.getName() +
+                        "' because active vehicles are currently classified under it. Reassign those vehicles first.");
+            }
+        }
 
         List<String> lines = FileHandler.readAll(path);
         List<String> updated = new ArrayList<>();
 
         for (String line : lines) {
-
             Category c = Category.fromString(line);
 
             if (c.getId() != id) {
@@ -74,5 +84,16 @@ public class CategoryService {
         }
 
         FileHandler.writeAll(path, updated);
+    }
+
+    // READ SINGLE RECORD → fetch category by its ID
+    public Category getById(int id) throws IOException {
+        List<Category> allCategories = getAll();
+        for (Category c : allCategories) {
+            if (c.getId() == id) {
+                return c;
+            }
+        }
+        return null;
     }
 }

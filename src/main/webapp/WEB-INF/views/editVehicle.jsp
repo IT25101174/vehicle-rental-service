@@ -1,4 +1,6 @@
 <%@ page import="com.vehiclerental.model.Vehicle" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.vehiclerental.model.Category" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -314,11 +316,25 @@
             </div>
 
             <div class="form-group">
-                <label for="type">Type</label>
+                <label for="type">Type (Category)</label>
                 <select id="type" name="type" required>
-                    <option value="Car"  <%= vehicle.getType().equals("Car")  ? "selected" : "" %>>Car</option>
-                    <option value="Bike" <%= vehicle.getType().equals("Bike") ? "selected" : "" %>>Bike</option>
-                    <option value="Van"  <%= vehicle.getType().equals("Van")  ? "selected" : "" %>>Van</option>
+                    <%
+                        List<Category> categoriesList = (List<Category>) request.getAttribute("categories");
+                        if (categoriesList != null && !categoriesList.isEmpty()) {
+                            for (Category c : categoriesList) {
+                                boolean isSel = c.getName().equalsIgnoreCase(vehicle.getType());
+                    %>
+                        <option value="<%= c.getName() %>" <%= isSel ? "selected" : "" %>><%= c.getName() %></option>
+                    <%
+                            }
+                        } else {
+                    %>
+                        <option value="Car"  <%= vehicle.getType().equals("Car")  ? "selected" : "" %>>Car</option>
+                        <option value="Bike" <%= vehicle.getType().equals("Bike") ? "selected" : "" %>>Bike</option>
+                        <option value="Van"  <%= vehicle.getType().equals("Van")  ? "selected" : "" %>>Van</option>
+                    <%
+                        }
+                    %>
                 </select>
             </div>
 

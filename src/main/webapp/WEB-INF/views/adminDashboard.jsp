@@ -46,6 +46,12 @@
                 <span class="card-name">Bookings & Rentals</span>
                 <p class="card-desc">Monitor active reservations and rental history across the fleet.</p>
             </a>
+
+            <a href="category?action=list" class="card">
+                <span class="card-tag">Classification</span>
+                <span class="card-name">Vehicle Categories</span>
+                <p class="card-desc">Define dynamic categories and filter options for browsing the catalog.</p>
+            </a>
         </div>
 
         <a href="user?action=logout" class="logout">← Logout and return to site</a>

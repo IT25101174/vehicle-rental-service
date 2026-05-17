@@ -2,6 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.vehiclerental.model.Vehicle" %>
 <%@ page import="com.vehiclerental.model.VehicleDetails" %>
+<%@ page import="com.vehiclerental.model.Category" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,6 +99,26 @@
     <div class="header">
         <div class="page-tag">Premium Fleet</div>
         <h1>Our <span>Vehicle Collection</span></h1>
+    </div>
+
+    <!-- Beautiful Filter Bar -->
+    <div style="display: flex; gap: 0.8rem; margin-bottom: 3rem; flex-wrap: wrap;">
+        <a href="vehicle?action=list" style="text-decoration: none; padding: 0.55rem 1.3rem; border-radius: 100px; font-size: 0.8rem; border: 1px solid var(--border); background: <%= request.getParameter("category") == null ? "var(--gold)" : "transparent" %>; color: <%= request.getParameter("category") == null ? "#000" : "var(--muted)" %>; font-weight: 600; transition: all 0.2s;">
+            All Collection
+        </a>
+        <%
+            List<Category> categories = (List<Category>) request.getAttribute("categories");
+            if (categories != null) {
+                for (Category c : categories) {
+                    boolean isActive = c.getName().equalsIgnoreCase(request.getParameter("category"));
+        %>
+            <a href="vehicle?action=list&category=<%= c.getName() %>" style="text-decoration: none; padding: 0.55rem 1.3rem; border-radius: 100px; font-size: 0.8rem; border: 1px solid var(--border); background: <%= isActive ? "var(--gold)" : "transparent" %>; color: <%= isActive ? "#000" : "var(--muted)" %>; font-weight: 600; transition: all 0.2s;">
+                <%= c.getName() %>
+            </a>
+        <%
+                }
+            }
+        %>
     </div>
 
     <div class="catalog-grid">

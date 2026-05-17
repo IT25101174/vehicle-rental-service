@@ -7,3 +7,4 @@
 8,abcd,abcd@gmail.com,abcd@1234,customer
 9,Beam,beamadmin@test.com,thamira,admin
 10,Thamira Weediyage,thamira@test.com,thamira,customer
+11,mick,mick@gmail.com,123,customer

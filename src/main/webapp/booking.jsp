@@ -1,6 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
     <head>
         <meta charset="UTF-8">
@@ -241,7 +242,7 @@
     <body>
 
         <nav>
-            <a href="index.html" class="logo">
+            <a href="index.jsp" class="logo">
                 <span class="logo-mark">
                     <svg viewBox="0 0 14 14" fill="none">
                         <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round"
@@ -251,7 +252,7 @@
                 </span>
                 Intelligent Auto Rentals
             </a>
-            <a href="vehicles.jsp" class="nav-link">← Back to Vehicles</a>
+            <a href="vehicle?action=list" class="nav-link">&larr; Back to Vehicles</a>
         </nav>
 
         <main>
@@ -304,7 +305,7 @@
                 </form>
 
                 <div class="back-link">
-                    Need a different vehicle? <a href="vehicles.jsp">Browse fleet</a>
+                    Need a different vehicle? <a href="vehicle?action=list">Browse fleet</a>
                 </div>
             </div>
         </main>

@@ -4,16 +4,24 @@ public class CustomerUser extends User
 {
     private String customerType;
 
+    // Default Constructor
     public CustomerUser()
     {
+        // Calls parent class
         super();
     }
 
+    // Parameterized constructor
     public CustomerUser(int id, String name, String email, String password, String customerType)
     {
+        // Calls parent class
         super(id, name, email, password, "customer");
+
+        // Assign customer type
         this.customerType = customerType;
     }
+
+    //Getter method
 
     public String getCustomerType()
     {
@@ -28,5 +36,10 @@ public class CustomerUser extends User
     public void bookVehicle()
     {
         System.out.println("Customer " + getName() + " is booking a vehicle.");
+    }
+
+    @Override
+    public String getDashboardRedirectURL() {
+        return "index.jsp";
     }
 }

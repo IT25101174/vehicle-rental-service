@@ -48,7 +48,7 @@
             </a>
         </div>
 
-        <a href="login.html" class="logout">← Logout and return to site</a>
+        <a href="user?action=logout" class="logout">← Logout and return to site</a>
     </div>
 </body>
 </html>

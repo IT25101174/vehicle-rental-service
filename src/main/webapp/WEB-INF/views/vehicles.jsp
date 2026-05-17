@@ -251,7 +251,7 @@
 <body>
 
 <nav>
-    <a href="index.html" class="logo">
+    <a href="admin?action=dashboard" class="logo">
         <span class="logo-mark">
             <svg viewBox="0 0 14 14" fill="none">
                 <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -261,7 +261,7 @@
         Intelligent Auto Rentals
     </a>
     <div class="nav-right">
-        <a href="adminDashboard.jsp">Dashboard</a>
+        <a href="admin?action=dashboard">Dashboard</a>
         <a href="user?action=logout" style="color: var(--danger);">Logout</a>
     </div>
 </nav>

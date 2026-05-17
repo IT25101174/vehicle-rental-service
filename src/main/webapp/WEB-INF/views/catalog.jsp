@@ -134,11 +134,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="price">LKR <%= v.getPricePerDay() %> <span>/ day</span></div>
-                        <% if (v.isAvailable()) { %>
-                            <a href="booking.jsp?vehicleId=<%= v.getId() %>" class="btn-rent">Rent Now</a>
-                        <% } else { %>
-                            <a href="#" class="btn-rent btn-disabled">Sold Out</a>
-                        <% } %>
+                        <a href="booking.jsp?vehicleId=<%= v.getId() %>" class="btn-rent">Rent Now</a>
                     </div>
                 </div>
             </div>

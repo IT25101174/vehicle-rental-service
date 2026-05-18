@@ -48,6 +48,17 @@ public class BookingService {
         return list;
     }
 
+    // READ BY ID
+    public Booking getBookingById(int id) throws IOException {
+        List<Booking> all = getAllBookings();
+        for (Booking b : all) {
+            if (b.getId() == id) {
+                return b;
+            }
+        }
+        return null;
+    }
+
     // READ BY USER
     public List<Booking> getBookingsByUser(int userId) throws IOException {
         List<Booking> all = getAllBookings();

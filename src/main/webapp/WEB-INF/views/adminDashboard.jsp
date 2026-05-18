@@ -58,6 +58,12 @@
                 <span class="card-name">Customer Reviews</span>
                 <p class="card-desc">Monitor customer reviews, moderate comments, and track ratings.</p>
             </a>
+
+            <a href="payment?action=adminList" class="card">
+                <span class="card-tag">Financials</span>
+                <span class="card-name">Payment Ledger</span>
+                <p class="card-desc">Track active transactions, audit counter collections, and manage cash invoices.</p>
+            </a>
         </div>
 
         <a href="user?action=logout" class="logout">← Logout and return to site</a>

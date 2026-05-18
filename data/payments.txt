@@ -1,0 +1,2 @@
+id,bookingId,amount,date,status,type,detail1,detail2
+1,9,3000.0,2026-05-18,Completed,card,1111222233334444,TXN_1779075082607

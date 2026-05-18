@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Vehicle — Intelligent Auto Rentals</title>
+    <title>Edit Vehicle — DrivePoint Auto Rentals</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -275,11 +275,10 @@
     <a href="index.html" class="logo">
         <span class="logo-mark">
             <svg viewBox="0 0 14 14" fill="none">
-                <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M4 8.5H10" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
+                    <path d="M4 2.5H7.5C10 2.5 11.5 4.5 11.5 7C11.5 9.5 10 11.5 7.5 11.5H4V2.5Z" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
         </span>
-        Intelligent Auto Rentals
+        DrivePoint Auto Rentals
     </a>
     <div class="nav-right">
         <a href="vehicle?action=list">← Vehicle List</a>
@@ -393,7 +392,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2026 Intelligent Auto Rentals. All rights reserved.</p>
+    <p>&copy; 2026 DrivePoint Auto Rentals. All rights reserved.</p>
 </footer>
 
 </body>

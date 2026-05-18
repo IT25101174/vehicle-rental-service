@@ -7,60 +7,78 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService {
+public class UserService
+{
 
-    // IMPORTANT: We completely deleted the hardcoded FILE_PATH here!
 
-    // 1. addUser now strictly uses the dynamic filePath
-    public void addUser(User user, String filePath) {
-        try {
-            System.out.println("ATTENTION: Securely saving data to -> " + filePath);
+    //add new user
+    public void addUser(User user, String filePath)
+    {
+        try
+        {
+            //dispaly file path
+            System.out.println("ATTENTION : Securely saving data to -> " + filePath);
 
-            // Generate ID using the dynamic path
+            //generate nest available id
             int nextId = FileHandler.getNextId(filePath);
+            //set generated id to user object
             user.setId(nextId);
 
-            // Save the data using the dynamic path
+            //save user data
             FileHandler.appendLine(filePath, user.toFileString());
 
-            System.out.println("SUCCESS: File writing complete!");
+            //done message
+            System.out.println("SUCCESS : File writing complete!");
 
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
+            //print error if operation fail
             e.printStackTrace();
         }
     }
 
-    // 2. getUsers now accepts the dynamic filePath
-    public ArrayList<User> getUsers(String filePath) {
+    //read all users
+    public ArrayList<User> getUsers(String filePath)
+    {
+        //create array list to store users
         ArrayList<User> users = new ArrayList<>();
 
-        try {
-            // Read lines from the dynamic path
+        try
+        {
+            //read all lines
             List<String> lines = FileHandler.readAll(filePath);
 
-            for (String line : lines) {
+            //loop through each line
+            for (String line : lines)
+            {
+                //split line
                 String[] data = line.split(",");
 
-                // Rebuild the User object polymorphically using the Factory Pattern
-                User user = User.createUser(
-                        Integer.parseInt(data[0]),
-                        data[1],
-                        data[2],
-                        data[3],
-                        data[4] // Role field
+                //create user object
+                User user = User.createUser
+                        (Integer.parseInt(data[0]), //id
+                        data[1], //name
+                        data[2], //email
+                        data[3], //password
+                        data[4] //role
                 );
-
+                //add usre object to list
                 users.add(user);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
+        catch (IOException e)
+        {
+            //print erroe if reading fail
+            e.printStackTrace();
+        }
         return users;
     }
 
-    // 3. login accepts the dynamic filePath AND passes it to getUsers
-    public boolean login(String email, String password, String filePath) {
+    //login validation, check email & pw is correct
+    public boolean login(String email, String password, String filePath)
+    {
 
         // Pass the map to getUsers so it knows where to read from!
         ArrayList<User> users = getUsers(filePath);

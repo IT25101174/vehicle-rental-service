@@ -44,11 +44,11 @@ public class VehicleDetailsService {
                 String[] parts = line.split(",");
                 if (parts.length >= 5 && Integer.parseInt(parts[0]) == vehicleId) {
                     return new VehicleDetails(
-                        vehicleId,
-                        parts[1], // fuelType
-                        Integer.parseInt(parts[2]), // seatingCapacity
-                        Boolean.parseBoolean(parts[3]), // hasAc
-                        Boolean.parseBoolean(parts[4]) // hasGear
+                            vehicleId,
+                            parts[1], // fuelType
+                            Integer.parseInt(parts[2]), // seatingCapacity
+                            Boolean.parseBoolean(parts[3]), // hasAc
+                            Boolean.parseBoolean(parts[4]) // hasGear
                     );
                 }
             }
@@ -60,5 +60,24 @@ public class VehicleDetailsService {
 
     private String formatLine(VehicleDetails d) {
         return d.getVehicleId() + "," + d.getFuelType() + "," + d.getSeatingCapacity() + "," + d.isHasAc() + "," + d.isHasGear();
+    }
+
+    // Cascading Delete — Models Composition lifetime dependency!
+    public void deleteDetails(int vehicleId) {
+        try {
+            List<String> lines = FileHandler.readAll(filePath);
+            List<String> newLines = new ArrayList<>();
+            for (String line : lines) {
+                if (line.trim().isEmpty()) continue;
+                String[] parts = line.split(",");
+                if (parts.length >= 1 && Integer.parseInt(parts[0].trim()) == vehicleId) {
+                    continue; // Skip/delete matching specifications record!
+                }
+                newLines.add(line);
+            }
+            FileHandler.writeAll(filePath, newLines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

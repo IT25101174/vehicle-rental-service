@@ -248,12 +248,46 @@
                 <span class="status <%= statusClass %>"><%= b.getStatus() %></span>
             </div>
             <p><b>Booking ID:</b> <%= b.getId() %></p>
-            <p><b>Vehicle ID:</b> <%= b.getVehicleId() %></p>
+            <%
+                com.vehiclerental.model.Vehicle v = null;
+                try {
+                    v = new com.vehiclerental.service.VehicleService().getVehicleById(b.getVehicleId());
+                } catch(Exception e) {}
+                String vehicleName = (v != null) ? v.getBrand() + " " + v.getType() : "Vehicle #" + b.getVehicleId();
+            %>
+            <p><b>Vehicle Name:</b> <%= vehicleName %></p>
             <p><b>Start Date:</b> <%= b.getStartDate() %></p>
             <p><b>End Date:</b> <%= b.getEndDate() %></p>
+            <%
+                com.vehiclerental.model.Payment paymentObj = null;
+                try {
+                    paymentObj = new com.vehiclerental.service.PaymentService().getPaymentByBookingId(b.getId());
+                } catch(Exception e) {}
+                String payStatusText = "Unpaid";
+                String payStatusClass = "status-cancelled";
+                if (paymentObj != null) {
+                    if ("Completed".equalsIgnoreCase(paymentObj.getStatus())) {
+                        payStatusText = "Paid (Completed)";
+                        payStatusClass = "status-active";
+                    } else {
+                        payStatusText = "Pending Cash Pickup";
+                        payStatusClass = "status-default";
+                    }
+                }
+            %>
+            <p><b>Payment Status:</b> <span class="status <%= payStatusClass %>" style="font-size: 0.68rem; padding: 0.15rem 0.55rem; border-radius: 4px; display: inline-block; letter-spacing: normal; text-transform: none;"><%= payStatusText %></span></p>
+
+                        <% if ("active".equals(b.getStatus())) { %>
+                            <a href="payment?action=checkout&bookingId=<%= b.getId() %>"
+                               style="display: block; text-align: center; margin-top: 1rem; padding: 0.6rem; background: var(--gold); color: #000; text-decoration: none; border-radius: 5px; font-size: 0.85rem; font-weight: 600; transition: opacity 0.2s;"
+                               onmouseover="this.style.opacity='0.85'"
+                               onmouseout="this.style.opacity='1'">
+                               Pay / View Invoice
+                            </a>
+                        <% } %>
 
                         <a href="booking?action=delete&id=<%= b.getId() %>"
-                           style="display: block; text-align: center; margin-top: 1rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
+                           style="display: block; text-align: center; margin-top: 0.5rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
                            onmouseover="this.style.background='rgba(248,113,113,0.1)'"
                            onmouseout="this.style.background='transparent'"
                            onclick="return confirm('Are you sure you want to cancel this booking?');">

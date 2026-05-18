@@ -328,9 +328,9 @@
                             }
                         } else {
                     %>
-                        <option value="Car"  <%= vehicle.getType().equals("Car")  ? "selected" : "" %>>Car</option>
-                        <option value="Bike" <%= vehicle.getType().equals("Bike") ? "selected" : "" %>>Bike</option>
-                        <option value="Van"  <%= vehicle.getType().equals("Van")  ? "selected" : "" %>>Van</option>
+                        <option value="Cars" <%= (vehicle.getType().equalsIgnoreCase("Cars") || vehicle.getType().equalsIgnoreCase("Car")) ? "selected" : "" %>>Car</option>
+                        <option value="Bike" <%= vehicle.getType().equalsIgnoreCase("Bike") ? "selected" : "" %>>Bike</option>
+                        <option value="Van"  <%= vehicle.getType().equalsIgnoreCase("Van")  ? "selected" : "" %>>Van</option>
                     <%
                         }
                     %>

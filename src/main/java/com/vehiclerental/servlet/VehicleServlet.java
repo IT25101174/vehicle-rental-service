@@ -63,8 +63,16 @@ public class VehicleServlet extends HttpServlet {
                     String catFilter = request.getParameter("category");
                     if (catFilter != null && !catFilter.trim().isEmpty()) {
                         List<Vehicle> filteredList = new java.util.ArrayList<>();
+                        String filterNorm = catFilter.trim().toLowerCase();
+                        if (filterNorm.endsWith("s")) {
+                            filterNorm = filterNorm.substring(0, filterNorm.length() - 1);
+                        }
                         for (Vehicle v : vehiclesList) {
-                            if (v.getType().equalsIgnoreCase(catFilter)) {
+                            String typeNorm = v.getType().trim().toLowerCase();
+                            if (typeNorm.endsWith("s")) {
+                                typeNorm = typeNorm.substring(0, typeNorm.length() - 1);
+                            }
+                            if (typeNorm.equals(filterNorm)) {
                                 filteredList.add(v);
                             }
                         }

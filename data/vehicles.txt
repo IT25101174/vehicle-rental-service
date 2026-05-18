@@ -8,3 +8,4 @@
 9,Bajaj,Bike,3000.0,true
 10,Tesla,Cars,9000.0,true
 11,Mercedes-Benz,Car,12000.0,true
+12,Volvo,Cars,9000.0,true

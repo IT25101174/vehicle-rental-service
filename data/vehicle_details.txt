@@ -8,3 +8,4 @@
 8,Diesel,5,true,true
 9,Petrol,2,false,true
 11,Petrol,5,true,false
+12,Petrol,5,true,false

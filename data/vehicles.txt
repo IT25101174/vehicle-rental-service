@@ -9,3 +9,4 @@
 10,Tesla,Cars,9000.0,true
 11,Mercedes-Benz,Car,12000.0,true
 12,Volvo,Cars,9000.0,true
+13,Toyota,Cars,6000.0,true

@@ -74,6 +74,13 @@ public class BookingService {
 
     // DELETE (Cancel)
     public void deleteBooking(int id) throws IOException {
+        // Cascading Delete — Void associated payment records to prevent ID recycling pollution!
+        try {
+            new com.vehiclerental.service.PaymentService().deletePaymentByBookingId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         List<String> lines = FileHandler.readAll(FILE_PATH);
         List<String> updated = new ArrayList<>();
 

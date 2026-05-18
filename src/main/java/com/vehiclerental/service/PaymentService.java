@@ -168,4 +168,26 @@ public class PaymentService {
         }
         FileHandler.writeAll(FILE_PATH, updated);
     }
+
+    // DELETE — void a payment by its associated Booking ID to support Cascading Deletes
+    public void deletePaymentByBookingId(int bookingId) throws IOException {
+        List<String> lines = FileHandler.readAll(FILE_PATH);
+        List<String> updated = new ArrayList<>();
+        for (String line : lines) {
+            if (line.trim().isEmpty()) continue;
+            String[] parts = line.split(",", -1);
+            if ("id".equalsIgnoreCase(parts[0].trim())) {
+                updated.add(line); // keep the header
+                continue;
+            }
+            try {
+                if (Integer.parseInt(parts[1].trim()) != bookingId) {
+                    updated.add(line);
+                }
+            } catch (NumberFormatException e) {
+                updated.add(line);
+            }
+        }
+        FileHandler.writeAll(FILE_PATH, updated);
+    }
 }

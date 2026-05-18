@@ -18,7 +18,7 @@
             --text: #f4f0ea; --muted: #7a7672;
         }
         body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; min-height: 100vh; }
-        
+
         nav { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 6%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(9,9,11,0.8); backdrop-filter: blur(15px); z-index: 100; }
         .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
         .logo-mark { width: 26px; height: 26px; background: var(--gold); border-radius: 5px; display: grid; place-items: center; }
@@ -29,9 +29,9 @@
         .container { padding: 4rem 6%; }
         .header { margin-bottom: 3.5rem; }
         .page-tag { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-        h1 { 
-            font-family: 'Syne', sans-serif; 
-            font-size: clamp(2.2rem, 5vw, 3rem); 
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3rem);
             letter-spacing: -0.03em;
             line-height: 1.1;
             font-weight: 800;
@@ -41,7 +41,7 @@
         .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
         .vehicle-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform 0.3s, border-color 0.3s; position: relative; }
         .vehicle-card:hover { transform: translateY(-8px); border-color: rgba(240,165,0,0.25); }
-        
+
         .card-img { width: 100%; height: 200px; background: #1a1a1c; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card-img:hover .specs-overlay { opacity: 1; transform: translateY(0); }
         .specs-overlay {
@@ -121,8 +121,27 @@
         %>
     </div>
 
+    <!-- Live Premium Fleet Search Bar -->
+    <div style="margin-bottom: 2.5rem; max-width: 480px; position: relative; animation: fadeUp 0.5s ease both;">
+        <input type="text" id="vehicleSearch" onkeyup="filterFleet()" placeholder="Search by brand or type (e.g. Honda, Toyota, Bike)..."
+               style="width: 100%; padding: 0.85rem 1.25rem 0.85rem 2.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.9rem; color: var(--text); outline: none; transition: all 0.2s;">
+        <span style="position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); font-size: 0.95rem; pointer-events: none; opacity: 0.65;">🔍</span>
+    </div>
+
+    <style>
+        input#vehicleSearch:focus {
+            border-color: rgba(240, 165, 0, 0.5) !important;
+            box-shadow: 0 0 0 4px rgba(240, 165, 0, 0.08);
+            background: var(--surface2) !important;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
     <div class="catalog-grid">
-        <% 
+        <%
             List<Vehicle> vehicles = (List<Vehicle>) request.getAttribute("vehicles");
             if (vehicles != null) {
                 for (Vehicle v : vehicles) {
@@ -135,7 +154,7 @@
                 <div class="card-img">
                     <span class="type-badge"><%= v.getType() %></span>
                     <img src="assets/vehicles/<%= v.getId() %>.jpg" onerror="this.src='<%= imgPath %>'" alt="<%= v.getBrand() %>">
-                    
+
                     <div class="specs-overlay">
                         <% VehicleDetails d = v.getDetails(); if(d != null) { %>
                             <div class="spec-item">⛽ <%= d.getFuelType() %></div>
@@ -163,9 +182,9 @@
                     </div>
                 </div>
             </div>
-        <% 
+        <%
                 }
-            } 
+            }
         %>
     </div>
 </div>
@@ -174,5 +193,22 @@
     <p>&copy; 2026 Intelligent Auto Rentals. All rights reserved.</p>
 </footer>
 
+<script>
+    function filterFleet() {
+        const query = document.getElementById('vehicleSearch').value.toLowerCase().trim();
+        const cards = document.querySelectorAll('.vehicle-card');
+
+        cards.forEach(card => {
+            const brand = card.querySelector('.card-brand').innerText.toLowerCase();
+            const type = card.querySelector('.type-badge').innerText.toLowerCase();
+
+            if (brand.includes(query) || type.includes(query)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
 </body>
 </html>

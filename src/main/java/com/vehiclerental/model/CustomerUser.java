@@ -4,24 +4,24 @@ public class CustomerUser extends User
 {
     private String customerType;
 
-    // Default Constructor
+    //default Constructor
     public CustomerUser()
     {
-        // Calls parent class
+        //call parent class
         super();
     }
 
     // Parameterized constructor
     public CustomerUser(int id, String name, String email, String password, String customerType)
     {
-        // Calls parent class
+        //call parent class
         super(id, name, email, password, "customer");
 
-        // Assign customer type
+        //assign customer type
         this.customerType = customerType;
     }
 
-    //Getter method
+    //getter & setter
 
     public String getCustomerType()
     {
@@ -33,6 +33,7 @@ public class CustomerUser extends User
         this.customerType = customerType;
     }
 
+    //booking vehicle method
     public void bookVehicle()
     {
         System.out.println("Customer " + getName() + " is booking a vehicle.");

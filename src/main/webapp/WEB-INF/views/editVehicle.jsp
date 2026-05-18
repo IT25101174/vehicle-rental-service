@@ -301,7 +301,7 @@
         <h1 class="card-title">Edit Vehicle</h1>
         <p class="card-sub">Changes will be saved to vehicles.txt.</p>
 
-        <form action="vehicle" method="post">
+        <form action="vehicle" method="post" enctype="multipart/form-data">
 
             <!-- Action tells servlet this is an UPDATE request -->
             <input type="hidden" name="action" value="update">
@@ -380,6 +380,12 @@
                     <option value="true"  <%= vehicle.isAvailable()  ? "selected" : "" %>>Available</option>
                     <option value="false" <%= !vehicle.isAvailable() ? "selected" : "" %>>Not Available</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="imageFile">Update Vehicle Image (File Upload)</label>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" style="border: 1px solid var(--border); background: var(--surface2); padding: 0.72rem 0.9rem; border-radius: 7px; color: var(--text); width: 100%;" />
+                <p style="font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem;">Optional: Upload a new JPG/PNG to replace the current vehicle image.</p>
             </div>
 
             <div class="form-actions">

@@ -7,14 +7,21 @@ import com.vehiclerental.service.VehicleDetailsService;
 
 import jakarta.servlet.ServletException; //handle servlet errors
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest; //get the browser data
 import jakarta.servlet.http.HttpServletResponse; //send to the browser data
+import jakarta.servlet.http.Part;
 
 import java.io.IOException; //handle IO errors
 import java.util.List; //store vehicle list
 
 @WebServlet("/vehicle")
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+    maxFileSize = 1024 * 1024 * 10,      // 10MB
+    maxRequestSize = 1024 * 1024 * 50    // 50MB
+)
 public class VehicleServlet extends HttpServlet {
 
     private VehicleService vehicleService;
@@ -173,6 +180,14 @@ public class VehicleServlet extends HttpServlet {
                         hasGear);
                 detailsService.saveDetails(details);
 
+                // Save dynamic image file upload
+                try {
+                    Part filePart = request.getPart("imageFile");
+                    saveVehicleImage(newVehicle.getId(), filePart, request.getServletContext());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 // Redirect to list page after adding
                 response.sendRedirect("vehicle?action=list");
                 break;
@@ -203,6 +218,14 @@ public class VehicleServlet extends HttpServlet {
                 VehicleDetails uDetails = new VehicleDetails(id, uFuelType, uSeatingCapacity, uHasAc, uHasGear);
                 detailsService.saveDetails(uDetails);
 
+                // Save dynamic image file upload if uploaded
+                try {
+                    Part filePart = request.getPart("imageFile");
+                    saveVehicleImage(id, filePart, request.getServletContext());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 // Redirect back to list page
                 response.sendRedirect("vehicle?action=list");
                 break;
@@ -210,6 +233,57 @@ public class VehicleServlet extends HttpServlet {
             // Default
             default:
                 response.sendRedirect("vehicle?action=list");
+        }
+    }
+
+    private void saveVehicleImage(int vehicleId, jakarta.servlet.http.Part filePart, jakarta.servlet.ServletContext servletContext) {
+        if (filePart == null || filePart.getSize() == 0) {
+            return;
+        }
+
+        String filename = vehicleId + ".jpg";
+
+        // 1. Save to running servlet deployment directory
+        String deployPath = servletContext.getRealPath("/assets/vehicles");
+        if (deployPath != null) {
+            try {
+                java.io.File deployDir = new java.io.File(deployPath);
+                if (!deployDir.exists()) {
+                    deployDir.mkdirs();
+                }
+                java.io.File destFile = new java.io.File(deployDir, filename);
+                try (java.io.InputStream input = filePart.getInputStream();
+                     java.io.FileOutputStream output = new java.io.FileOutputStream(destFile)) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                }
+                System.out.println("Saved image to deploy path: " + destFile.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // 2. Save to source directory so it persists across rebuilds/re-deploys!
+        try {
+            String userDir = System.getProperty("user.dir");
+            java.io.File srcDir = new java.io.File(userDir, "src/main/webapp/assets/vehicles");
+            if (srcDir.exists()) {
+                java.io.File destFile = new java.io.File(srcDir, filename);
+                try (java.io.InputStream input = filePart.getInputStream();
+                     java.io.FileOutputStream output = new java.io.FileOutputStream(destFile)) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                }
+                System.out.println("Saved image to source path: " + destFile.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -35,18 +35,35 @@ public class UserServlet extends HttpServlet
 
             // Open userList.jsp
             request.getRequestDispatcher("/WEB-INF/views/userList.jsp").forward(request, response);
-        } else if ("edit".equals(action)) {
+        }
+
+        //edit user
+        else if ("edit".equals(action))
+        {
+            // get user id from url
             int id = Integer.parseInt(request.getParameter("id"));
+            // find user by id
             User user = service.getUserById(id, dynamicPath);
+            //send user object to jsp
             request.setAttribute("user", user);
+            //open edit page
             request.getRequestDispatcher("/WEB-INF/views/editUser.jsp").forward(request, response);
-        } else if ("delete".equals(action)) {
+        }
+
+        //delete user
+        else if ("delete".equals(action)) {
+            //get user id
             int id = Integer.parseInt(request.getParameter("id"));
             service.deleteUser(id, dynamicPath);
             response.sendRedirect("user?action=listUsers");
-        } else if ("addUserForm".equals(action)) {
+        }
+
+        else if ("addUserForm".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
-        } else if ("logout".equals(action)) {
+        }
+
+        else if ("logout".equals(action))
+        {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();

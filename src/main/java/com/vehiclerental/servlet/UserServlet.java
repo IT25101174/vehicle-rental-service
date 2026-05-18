@@ -104,7 +104,7 @@ public class UserServlet extends HttpServlet
 
             //create user object
             User newUser = User.createUser(0, name, email, password, role);
-            //save user
+            //save user to user service
             service.addUser(newUser, securePath);
             //redirect to login
             response.sendRedirect("login.html?success=true");

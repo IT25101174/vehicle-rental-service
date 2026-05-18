@@ -54,93 +54,137 @@ public class UserServlet extends HttpServlet
         else if ("delete".equals(action)) {
             //get user id
             int id = Integer.parseInt(request.getParameter("id"));
+            //delete user
             service.deleteUser(id, dynamicPath);
+            //redirect to user list
             response.sendRedirect("user?action=listUsers");
         }
 
-        else if ("addUserForm".equals(action)) {
+        // add user form
+        else if ("addUserForm".equals(action))
+        {
+            //open adduser.jsp page
             request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
         }
 
+        //user logout
         else if ("logout".equals(action))
         {
+            //get current session
             HttpSession session = request.getSession(false);
-            if (session != null) {
+            //if session available
+            if (session != null)
+            {
+                //terminate session
                 session.invalidate();
             }
+            //redirect to homepage
             response.sendRedirect("index.jsp");
         }
     }
 
+    //handle post requests
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, jakarta.servlet.ServletException
     {
+        //get action parameter
         String action = request.getParameter("action");
+        //user file path
         String securePath = "data/users.txt";
+        //register user
         if ("register".equals(action))
         {
-// We don't grab ID from the form anymore, the Service handles that!
+            //get form data
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-// Grab the missing 5th parameter from the HTML dropdown
+            //get selected role
             String role = request.getParameter("role");
 
-            // Encapsulated polymorphic creation using Factory Pattern
+            //create user object
             User newUser = User.createUser(0, name, email, password, role);
+            //save user
             service.addUser(newUser, securePath);
-            
+            //redirect to login
             response.sendRedirect("login.html?success=true");
-        } 
-        // 2. Handle Login
-        else if ("login".equals(action)) {
+        }
+
+        //user login
+        else if ("login".equals(action))
+        {
+            //get loin details
             String email = request.getParameter("email");
             String password = request.getParameter("password");
- 
+
+            //validate user
             User user = service.validateUser(email, password, securePath);
- 
-            if (user != null) {
-                // Store user info in session
+
+            //if login done
+            if (user != null)
+            {
+                //create session
                 HttpSession session = request.getSession();
+                //store user data
                 session.setAttribute("userId", user.getId());
                 session.setAttribute("userName", user.getName());
                 session.setAttribute("role", user.getRole());
                 
-                // Redirect based on role polymorphically! (Abstraction in action)
+                //redirect to dashboard
                 response.sendRedirect(user.getDashboardRedirectURL());
-            } else {
+            }
+            else
+            {
+                //login failed
                 response.sendRedirect("login.html?error=invalid");
             }
         }
+
+        //update user
         else if ("update".equals(action))
         {
+            //get updated user details
             int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            
+
+            //get role
             String role = request.getParameter("role");
-            if (role == null || role.isEmpty()) {
+
+            //if role is empty
+            if (role == null || role.isEmpty())
+            {
+                //get old user
                 User oldUser = service.getUserById(id, securePath);
+                //keep previous role
                 role = (oldUser != null) ? oldUser.getRole() : "customer";
             }
 
+            //create updated user object
             User updatedUser = User.createUser(id, name, email, password, role);
+
+            //update user in file
             service.updateUser(updatedUser, securePath);
 
+            //redirect to list page
             response.sendRedirect("user?action=listUsers");
         }
+
+        //admin add user
         else if ("adminAddUser".equals(action))
         {
+            //get form data
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String role = request.getParameter("role");
 
+            //create user object
             User newUser = User.createUser(0, name, email, password, role);
+            //save user
             service.addUser(newUser, securePath);
-            
+            //redirect to userlist
             response.sendRedirect("user?action=listUsers");
         }
     }

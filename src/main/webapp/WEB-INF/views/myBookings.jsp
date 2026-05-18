@@ -277,22 +277,22 @@
             %>
             <p><b>Payment Status:</b> <span class="status <%= payStatusClass %>" style="font-size: 0.68rem; padding: 0.15rem 0.55rem; border-radius: 4px; display: inline-block; letter-spacing: normal; text-transform: none;"><%= payStatusText %></span></p>
 
-                        <% if ("active".equals(b.getStatus())) { %>
+                        <% if ("pending".equals(b.getStatus()) || "active".equals(b.getStatus())) { %>
                             <a href="payment?action=checkout&bookingId=<%= b.getId() %>"
                                style="display: block; text-align: center; margin-top: 1rem; padding: 0.6rem; background: var(--gold); color: #000; text-decoration: none; border-radius: 5px; font-size: 0.85rem; font-weight: 600; transition: opacity 0.2s;"
                                onmouseover="this.style.opacity='0.85'"
                                onmouseout="this.style.opacity='1'">
-                               Pay / View Invoice
+                               <%= "active".equals(b.getStatus()) ? "View Invoice / Receipt" : "Pay / View Invoice" %>
+                            </a>
+
+                            <a href="booking?action=delete&id=<%= b.getId() %>"
+                               style="display: block; text-align: center; margin-top: 0.5rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
+                               onmouseover="this.style.background='rgba(248,113,113,0.1)'"
+                               onmouseout="this.style.background='transparent'"
+                               onclick="return confirm('Are you sure you want to cancel this booking?');">
+                               Cancel Reservation
                             </a>
                         <% } %>
-
-                        <a href="booking?action=delete&id=<%= b.getId() %>"
-                           style="display: block; text-align: center; margin-top: 0.5rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
-                           onmouseover="this.style.background='rgba(248,113,113,0.1)'"
-                           onmouseout="this.style.background='transparent'"
-                           onclick="return confirm('Are you sure you want to cancel this booking?');">
-                           Cancel Reservation
-                        </a>
 
         </div>
     <% } %>

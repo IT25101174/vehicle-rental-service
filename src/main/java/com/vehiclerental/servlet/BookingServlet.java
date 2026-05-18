@@ -41,7 +41,7 @@ public class BookingServlet extends HttpServlet {
         }
 
         if (service.isVehicleAvailable(vehicleId, start, end)) {
-            Booking booking = new Booking(0, sessionUserId, vehicleId, start, end, "active");
+            Booking booking = new Booking(0, sessionUserId, vehicleId, start, end, "pending");
             service.addBooking(booking);
             response.sendRedirect("booking?action=my");
 

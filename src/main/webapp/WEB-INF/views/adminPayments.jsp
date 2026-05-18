@@ -197,7 +197,7 @@
 
     <div class="header">
         <div>
-            <a href="user?action=dashboard" class="btn-back" style="display: inline-block; margin-bottom: 1rem;">← Back to Dashboard</a>
+            <a href="user?action=dashboard" class="btn-back" style="display: inline-block; margin-bottom: 1rem;">&larr; Back to Dashboard</a>
             <h1 class="title">Payment <span>Ledger</span></h1>
             <p class="subtitle">Monitor active invoices, process counter collections, and track payments.</p>
         </div>

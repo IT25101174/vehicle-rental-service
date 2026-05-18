@@ -34,13 +34,19 @@ public class BookingServlet extends HttpServlet {
         String start = request.getParameter("startDate");
         String end = request.getParameter("endDate");
 
+        // Server-side validation to prevent empty dates in the flat-file database
+        if (start == null || start.trim().isEmpty() || end == null || end.trim().isEmpty()) {
+            response.sendRedirect("booking?action=my&error=missing_dates");
+            return;
+        }
+
         if (service.isVehicleAvailable(vehicleId, start, end)) {
             Booking booking = new Booking(0, sessionUserId, vehicleId, start, end, "active");
             service.addBooking(booking);
             response.sendRedirect("booking?action=my");
 
         } else {
-            response.getWriter().println("Vehicle not available!");
+            response.getWriter().println("Vehicle not available for the selected dates!");
         }
     }
 

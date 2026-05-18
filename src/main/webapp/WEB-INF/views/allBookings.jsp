@@ -27,7 +27,7 @@
     <div class="container">
         <div class="header">
             <h1 class="title">All <span>Reservations</span></h1>
-            <a href="admin?action=dashboard" class="btn-back">← Back to Dashboard</a>
+            <a href="admin?action=dashboard" class="btn-back">&larr; Back to Dashboard</a>
         </div>
 
         <table>

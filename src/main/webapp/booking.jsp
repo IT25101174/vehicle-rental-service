@@ -251,7 +251,7 @@
                 </span>
                 Intelligent Auto Rentals
             </a>
-            <a href="vehicles.jsp" class="nav-link">← Back to Vehicles</a>
+            <a href="vehicle?action=list" class="nav-link">&larr; Back to Vehicles</a>
         </nav>
 
             <main>
@@ -263,18 +263,29 @@
                     </div>
 
                     <form action="booking" method="post">
-                        <!--<div class="form-group">
-                <label for="userId">User ID</label>
-                <input type="text" id="userId" name="userId" placeholder="Enter your user ID" required>
-            </div>
+                        <% 
+                            Integer sessionUserId = (Integer) session.getAttribute("userId"); 
+                            String userName = (String) session.getAttribute("userName"); 
+                            if (sessionUserId == null) {
+                                response.sendRedirect("login.html"); 
+                                return;
+                            } 
 
-            <div class="form-group">
-                <label for="vehicleId">Vehicle ID</label>
-                <input type="text" id="vehicleId" name="vehicleId" placeholder="Enter vehicle ID" required>
-            </div>-->
-                        <% Integer sessionUserId=(Integer) session.getAttribute("userId"); String userName=(String)
-                            session.getAttribute("userName"); if (sessionUserId==null) {
-                            response.sendRedirect("login.html"); } %>
+                            // Dynamically look up vehicle specs
+                            String vIdStr = request.getParameter("vehicleId");
+                            String vehicleDisplayName = "Unknown Vehicle";
+                            if (vIdStr != null && !vIdStr.trim().isEmpty()) {
+                                try {
+                                    int vId = Integer.parseInt(vIdStr.trim());
+                                    com.vehiclerental.model.Vehicle vehicle = new com.vehiclerental.service.VehicleService().getVehicleById(vId);
+                                    if (vehicle != null) {
+                                        vehicleDisplayName = vehicle.getBrand() + " (" + vehicle.getType() + ")";
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        %>
                             <div class="form-group">
                                 <label>Booking For</label>
                                 <div
@@ -285,9 +296,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="vehicleId">Vehicle ID</label>
-                                <input type="text" id="vehicleId" name="vehicleId" readonly
-                                    style="opacity: 0.6; cursor: not-allowed; border-left: 3px solid var(--gold);">
+                                <label>Vehicle Selected</label>
+                                <div
+                                    style="font-size: 1.1rem; color: var(--gold); font-weight: 500; margin-bottom: 0.5rem;">
+                                    <%= vehicleDisplayName %>
+                                </div>
+                                <input type="hidden" id="vehicleId" name="vehicleId" value="<%= vIdStr != null ? vIdStr : "" %>">
                             </div>
 
                             <div class="form-group">
@@ -305,7 +319,7 @@
                     </form>
 
                 <div class="back-link">
-                    Need a different vehicle? <a href="vehicles.jsp">Browse fleet</a>
+                    Need a different vehicle? <a href="vehicle?action=list">Browse fleet</a>
                 </div>
             </div>
         </main>

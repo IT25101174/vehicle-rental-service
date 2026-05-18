@@ -328,7 +328,7 @@
                         <div class="page-tag">Fleet Management</div>
                         <h1 class="page-title">Vehicle List</h1>
                     </div>
-                    <a href="../add-vehicle.html" class="btn-add">+ Add New Vehicle</a>
+                    <a href="add-vehicle.html" class="btn-add">+ Add New Vehicle</a>
                 </div>
 
                 <div class="table-wrap">
@@ -388,9 +388,9 @@
                                         </td>
                                         <td>
                                             <div class="action-btns">
-                                                <a href="../vehicle?action=edit&id=<%= v.getId() %>"
+                                                <a href="vehicle?action=edit&id=<%= v.getId() %>"
                                                     class="btn-edit">Edit</a>
-                                                <a href="../vehicle?action=delete&id=<%= v.getId() %>" class="btn-del"
+                                                <a href="vehicle?action=delete&id=<%= v.getId() %>" class="btn-del"
                                                     onclick="return confirm('Are you sure you want to delete this vehicle?');">Delete</a>
                                             </div>
                                         </td>

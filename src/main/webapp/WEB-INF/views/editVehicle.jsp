@@ -282,7 +282,7 @@
         Intelligent Auto Rentals
     </a>
     <div class="nav-right">
-        <a href="../vehicle?action=list">← Vehicle List</a>
+        <a href="vehicle?action=list">← Vehicle List</a>
         <a href="adminDashboard.jsp">Dashboard</a>
     </div>
 </nav>
@@ -293,7 +293,7 @@
         <div class="breadcrumb">
             <a href="adminDashboard.jsp">Dashboard</a>
             <span>/</span>
-            <a href="../vehicle?action=list">Vehicles</a>
+            <a href="vehicle?action=list">Vehicles</a>
             <span>/</span>
             Edit
         </div>
@@ -302,7 +302,7 @@
         <h1 class="card-title">Edit Vehicle</h1>
         <p class="card-sub">Changes will be saved to vehicles.txt.</p>
 
-        <form action="../vehicle" method="post">
+        <form action="vehicle" method="post">
 
             <!-- Action tells servlet this is an UPDATE request -->
             <input type="hidden" name="action" value="update">

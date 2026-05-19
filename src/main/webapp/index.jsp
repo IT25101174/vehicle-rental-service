@@ -303,6 +303,7 @@
                         <span style="font-size: 0.85rem; color: var(--gold);">Welcome, <strong>
                                 <%= userName %>
                             </strong></span>
+                        <a href="user?action=editProfile">My Profile</a>
                         <% if ("admin".equalsIgnoreCase(role)) { %>
                             <a href="user?action=listUsers">Admin Panel</a>
                             <% } %>

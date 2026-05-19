@@ -2,3 +2,6 @@ id,bookingId,amount,date,status,type,detail1,detail2
 1,9,3000.0,2026-05-18,Completed,card,1111222233334444,TXN_1779075082607
 2,12,15000.0,2026-05-18,Pending,cash,Colombo Head Office,EMP_820
 3,14,16000.0,2026-05-19,Completed,card,1234432112344321,TXN_1779149863061
+4,6,36000.0,2026-05-19,Completed,cash,Kandy City Counter,EMP_578
+5,15,22500.0,2026-05-19,Completed,card,1111222233334444,TXN_1779153076909
+6,16,9000.0,2026-05-19,Completed,cash,Colombo Head Office,EMP_828

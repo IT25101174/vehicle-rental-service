@@ -67,6 +67,21 @@ public class UserServlet extends HttpServlet
             request.getRequestDispatcher("/WEB-INF/views/addUser.jsp").forward(request, response);
         }
 
+        // view and edit customer profile
+        else if ("editProfile".equals(action))
+        {
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("userId") == null)
+            {
+                response.sendRedirect("login.html");
+                return;
+            }
+            int id = (Integer) session.getAttribute("userId");
+            User user = service.getUserById(id, dynamicPath);
+            request.setAttribute("user", user);
+            request.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(request, response);
+        }
+
         //user logout
         else if ("logout".equals(action))
         {
@@ -169,6 +184,33 @@ public class UserServlet extends HttpServlet
 
             //redirect to list page
             response.sendRedirect("user?action=listUsers");
+        }
+
+        // Customer self profile update
+        else if ("updateProfile".equals(action))
+        {
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("userId") == null)
+            {
+                response.sendRedirect("login.html");
+                return;
+            }
+            int id = Integer.parseInt(request.getParameter("id"));
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+
+            // Maintain their existing role (always keep original role, which is 'customer')
+            User oldUser = service.getUserById(id, securePath);
+            String role = (oldUser != null) ? oldUser.getRole() : "customer";
+
+            User updatedUser = User.createUser(id, name, email, password, role);
+            service.updateUser(updatedUser, securePath);
+
+            // Dynamically refresh the session's name attribute so navigation instantly updates
+            session.setAttribute("userName", name);
+
+            response.sendRedirect("user?action=editProfile&success=true");
         }
 
         //admin add user

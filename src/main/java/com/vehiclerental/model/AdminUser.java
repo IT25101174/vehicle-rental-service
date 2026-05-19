@@ -1,25 +1,34 @@
 package com.vehiclerental.model;
 
+// AdminUser inherits from the main User class
 public class AdminUser extends User {
 
+    // Specific role for the admin
     private String adminRole;
 
-    // The updated constructor
+    // Constructor to create an admin user
     public AdminUser(int id, String name, String email, String password, String adminRole) {
-        // The Fix: Pass the 4 variables UP to the parent,
-        // AND hardcode the 5th variable (role) as "admin"!
+        // Pass details to parent constructor and force the system role to "admin"
         super(id, name, email, password, "admin");
         this.adminRole = adminRole;
     }
 
-    public String getAdminRole() { return adminRole; }
+    // Get the admin role
+    public String getAdminRole() {
+        return adminRole;
+    }
 
-    public void setAdminRole(String adminRole) { this.adminRole = adminRole; }
+    // Set the admin role
+    public void setAdminRole(String adminRole) {
+        this.adminRole = adminRole;
+    }
 
+    // Method to simulate admin management activity
     public void manageSystem() {
         System.out.println("Admin " + getName() + " is managing the system.");
     }
 
+    // Returns the dashboard URL for this specific user type
     @Override
     public String getDashboardRedirectURL() {
         return "admin?action=dashboard";

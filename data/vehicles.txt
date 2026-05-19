@@ -1,4 +1,4 @@
-2,Honda,Bike,3000.0,true
+2,Honda,Van,3000.0,true
 3,Nissan,Van,8000.0,false
 4,Suzuki,Bike,2500.0,true
 5,Toyota,Van,9000.0,true

@@ -17,7 +17,35 @@ public class BookingServlet extends HttpServlet {
     private BookingService service = new BookingService();
 
     // CREATE booking
-    // Added ServletException for VS Code
+    // Added ServletException for VS
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    // Code
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

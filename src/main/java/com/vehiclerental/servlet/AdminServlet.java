@@ -14,67 +14,73 @@ import java.io.IOException;
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
 
-    // Use the unified UserService instead of AdminService
-    UserService userService = new UserService();
+    // Service to handle user-related logic
+    private final UserService userService = new UserService();
 
-    // Handles Viewing Pages (The Dashboard)
-    // Added ServletException for VS Code
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // File where all user accounts are saved
+    private final String securePath = "data/users.txt";
+
+    // Handles loading pages (like the dashboard)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("action");
 
-        // Force Admin Login validation to protect the dashboard from direct URL access!
+        // Security check: If not logged in as admin, kick them out to the login page
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("userId") == null || !"admin".equalsIgnoreCase((String) session.getAttribute("role"))) {
+        if (session == null || session.getAttribute("userId") == null
+                || !"admin".equalsIgnoreCase((String) session.getAttribute("role"))) {
             response.sendRedirect("adminLogin.html");
             return;
         }
 
+        // Show the admin dashboard view
         if ("dashboard".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/views/adminDashboard.jsp").forward(request, response);
         }
     }
 
-    // Handles Form Submissions (Login and Register)
-    // Added ServletException for VS Code
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // Handles form submissions (Register and Login forms)
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String action = request.getParameter("action");
-        // Unified project-wide user storage
-        String securePath = "data/users.txt";
 
-        // 1. Handle Admin Registration
+        // 1. Process Admin Registration form
         if ("adminRegister".equals(action)) {
             String name = request.getParameter("name");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
-            String role = request.getParameter("role"); // Claude hardcoded this to "admin"
+            String role = request.getParameter("role");
 
+            // Create a new user object and save it to our text file
             User newAdmin = User.createUser(0, name, email, password, role);
-            // Updated to use userService
             userService.addUser(newAdmin, securePath);
 
-            // Send them to the login page after registering
+            // Go to login page after signing up
             response.sendRedirect("adminLogin.html");
         }
 
-        // 2. Handle Admin Login
+        // 2. Process Admin Login form
         else if ("adminLogin".equals(action)) {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
- 
-            // Use the unified validateUser method
+
+            // Check if credentials match any user in the text file
             User admin = userService.validateUser(email, password, securePath);
- 
+
+            // Check if the user exists and is actually an admin
             if (admin != null && "admin".equalsIgnoreCase(admin.getRole())) {
-                // SUCCESS: Set up the session properly
+                // Success: Save user info into the session
                 HttpSession session = request.getSession();
                 session.setAttribute("userId", admin.getId());
                 session.setAttribute("userName", admin.getName());
                 session.setAttribute("role", admin.getRole());
 
-                // Route to the dashboard
+                // Send them to the dashboard
                 response.sendRedirect("admin?action=dashboard");
             } else {
-                // Failed! Send back to the login page with error flag
+                // Failure: Send them back to login page with an error flag
                 response.sendRedirect("adminLogin.html?error=true");
             }
         }

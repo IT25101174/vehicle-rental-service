@@ -8,18 +8,18 @@ import java.util.List;
 
 public class AdminService {
 
-    // 1. The High-Security Login Check
+    // 1. Security Login Check
     public boolean authenticateAdmin(String email, String password, String filePath) {
         try {
             List<String> lines = FileHandler.readAll(filePath);
             for (String line : lines) {
                 String[] parts = line.split(",");
-                // parts[2] is email, parts[3] is password, parts[4] is role
+                // email,password,role
                 if (parts.length >= 5) {
                     if (parts[2].trim().equals(email) &&
                             parts[3].trim().equals(password) &&
                             parts[4].trim().equalsIgnoreCase("admin")) {
-                        return true; // Match found AND they are an admin!
+                        return true; // Match found == they are an admin
                     }
                 }
             }
@@ -29,7 +29,7 @@ public class AdminService {
         return false; // Failed password OR they are just a customer
     }
 
-    // 2. Registering a New Admin
+    // Registering a New Admin
     public void addAdmin(User admin, String filePath) {
         try {
             // Get the next ID automatically using your team's FileHandler

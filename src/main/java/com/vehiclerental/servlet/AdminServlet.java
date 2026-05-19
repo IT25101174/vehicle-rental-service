@@ -22,6 +22,13 @@ public class AdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
+        // Force Admin Login validation to protect the dashboard from direct URL access!
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null || !"admin".equalsIgnoreCase((String) session.getAttribute("role"))) {
+            response.sendRedirect("adminLogin.html");
+            return;
+        }
+
         if ("dashboard".equals(action)) {
             request.getRequestDispatcher("/WEB-INF/views/adminDashboard.jsp").forward(request, response);
         }

@@ -121,7 +121,8 @@ public class BookingService {
         List<Booking> bookings = getAllBookings();
 
         for (Booking b : bookings) {
-            if (b.getVehicleId() == vehicleId && b.getStatus().equals("active")) {
+            String status = b.getStatus();
+            if (b.getVehicleId() == vehicleId && ("active".equalsIgnoreCase(status) || "pending".equalsIgnoreCase(status))) {
 
                 if (start.compareTo(b.getEndDate()) <= 0 &&
                         end.compareTo(b.getStartDate()) >= 0) {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard — Intelligent Auto Rentals</title>
+    <title>Admin Dashboard — DrivePoint Auto Rentals</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #09090b; --surface: #111113; --gold: #f0a500; --text: #f4f0ea; --muted: #7a7672; --border: rgba(255,255,255,0.08); }

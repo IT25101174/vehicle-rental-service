@@ -7,132 +7,196 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserService {
+public class UserService
+{
 
-    // IMPORTANT: We completely deleted the hardcoded FILE_PATH here!
 
-    // 1. addUser now strictly uses the dynamic filePath
-    public void addUser(User user, String filePath) {
-        try {
-            System.out.println("ATTENTION: Securely saving data to -> " + filePath);
+    //add new user
+    public void addUser(User user, String filePath)
+    {
+        try
+        {
+            //dispaly file path
+            System.out.println("ATTENTION : Securely saving data to -> " + filePath);
 
-            // Generate ID using the dynamic path
+            //generate nest available id
             int nextId = FileHandler.getNextId(filePath);
+            //set generated id to user object
             user.setId(nextId);
 
-            // Save the data using the dynamic path
+            //save user data
             FileHandler.appendLine(filePath, user.toFileString());
 
-            System.out.println("SUCCESS: File writing complete!");
+            //done message
+            System.out.println("SUCCESS : File writing complete!");
 
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
+            //print error if operation fail
             e.printStackTrace();
         }
     }
 
-    // 2. getUsers now accepts the dynamic filePath
-    public ArrayList<User> getUsers(String filePath) {
+    //read all users
+    public ArrayList<User> getUsers(String filePath)
+    {
+        //create array list to store users
         ArrayList<User> users = new ArrayList<>();
 
-        try {
-            // Read lines from the dynamic path
+        try
+        {
+            //read all lines
             List<String> lines = FileHandler.readAll(filePath);
 
-            for (String line : lines) {
+            //loop through each line
+            for (String line : lines)
+            {
+                //split line
                 String[] data = line.split(",");
 
-                // Rebuild the User object polymorphically using the Factory Pattern
-                User user = User.createUser(
-                        Integer.parseInt(data[0]),
-                        data[1],
-                        data[2],
-                        data[3],
-                        data[4] // Role field
+                //create user object
+                User user = User.createUser
+                        (Integer.parseInt(data[0]), //id
+                        data[1], //name
+                        data[2], //email
+                        data[3], //password
+                        data[4] //role
                 );
-
+                //add usre object to list
                 users.add(user);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
+        catch (IOException e)
+        {
+            //print erroe if reading fail
+            e.printStackTrace();
+        }
         return users;
     }
 
-    // 3. login accepts the dynamic filePath AND passes it to getUsers
-    public boolean login(String email, String password, String filePath) {
+    //login validation, check email & pw is correct
+    public boolean login(String email, String password, String filePath)
+    {
 
-        // Pass the map to getUsers so it knows where to read from!
+        //get all users
         ArrayList<User> users = getUsers(filePath);
 
-        for (User u : users) {
-            if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+        for (User u : users)
+        {
+            // check mail & pw
+            if (u.getEmail().equals(email) && u.getPassword().equals(password))
+            {
+                //done
                 return true;
             }
         }
+        //fail
         return false;
     }
 
-    // 3. login returns the full User object if successful
-    public User validateUser(String email, String password, String filePath) {
+    //validate user & return object,return user object if login done
+    public User validateUser(String email, String password, String filePath)
+    {
         ArrayList<User> users = getUsers(filePath);
-        for (User u : users) {
-            if (u.getEmail().equals(email) && u.getPassword().equals(password)) {
+        //get all users
+        for (User u : users)
+        {
+            //check mail & pw
+            if (u.getEmail().equals(email) && u.getPassword().equals(password))
+            {
+                //return matching user
                 return u;
             }
         }
+        //not found
         return null;
     }
 
-    // 4. getUserById
-    public User getUserById(int id, String filePath) {
+    //get user by id,find user
+    public User getUserById(int id, String filePath)
+    {
+        //get all users
         ArrayList<User> users = getUsers(filePath);
-        for (User u : users) {
-            if (u.getId() == id) {
+        //search user
+        for (User u : users)
+        {
+            //compare id
+            if (u.getId() == id)
+            {
+                //matching user
                 return u;
             }
         }
+        //not found
         return null;
     }
 
-    // 5. updateUser (UPDATE)
-    public void updateUser(User updatedUser, String filePath) {
+    //update existing user details
+    public void updateUser(User updatedUser, String filePath)
+    {
         try {
+            //read all line
             List<String> lines = FileHandler.readAll(filePath);
+            //create new list
             List<String> newLines = new ArrayList<>();
 
-            for (String line : lines) {
+            for (String line : lines)
+            {
                 String[] parts = line.split(",");
+                //get user id
                 int userId = Integer.parseInt(parts[0]);
-
-                if (userId == updatedUser.getId()) {
+                //if matching user found
+                if (userId == updatedUser.getId())
+                {
+                    //add updated user data
                     newLines.add(updatedUser.toFileString());
-                } else {
+                }
+                else
+                {
+                    //keep old data
                     newLines.add(line);
                 }
             }
+            //rewrite updated data
             FileHandler.writeAll(filePath, newLines);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
+            //error print
             e.printStackTrace();
         }
     }
 
-    // 6. deleteUser (DELETE)
-    public void deleteUser(int id, String filePath) {
-        try {
+    //delete user using id
+    public void deleteUser(int id, String filePath)
+    {
+        try
+        {
+            //;read all lines
             List<String> lines = FileHandler.readAll(filePath);
+            //create new list
             List<String> newLines = new ArrayList<>();
 
-            for (String line : lines) {
+            for (String line : lines)
+            {
                 String[] parts = line.split(",");
+                //get user id
                 int userId = Integer.parseInt(parts[0]);
-
-                if (userId != id) {
+                //keep onl;y users(dont match delete id)
+                if (userId != id)
+                {
+                    //add remain users
                     newLines.add(line);
                 }
             }
+            //save update data
             FileHandler.writeAll(filePath, newLines);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
+            //print error
             e.printStackTrace();
         }
     }

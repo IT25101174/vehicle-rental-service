@@ -47,6 +47,13 @@ public class PaymentServlet extends HttpServlet {
                     // Mock secure gateway transaction reference ID
                     String transactionId = "TXN_" + System.currentTimeMillis();
                     payment = new CardPayment(0, bookingId, amount, date, "Completed", cardNumber, transactionId);
+                    
+                    // Automatically activate booking upon successful card checkout!
+                    Booking booking = bookingService.getBookingById(bookingId);
+                    if (booking != null) {
+                        booking.setStatus("active");
+                        bookingService.updateBooking(booking);
+                    }
                 } else {
                     String branchLocation = request.getParameter("branchLocation");
                     // Mock auto counter representative employee assignment
@@ -168,6 +175,17 @@ public class PaymentServlet extends HttpServlet {
 
                     int paymentId = Integer.parseInt(request.getParameter("id"));
                     paymentService.updatePaymentStatus(paymentId, "Completed");
+
+                    // Automatically activate the corresponding booking upon cash payment confirmation!
+                    Payment payment = paymentService.getPaymentById(paymentId);
+                    if (payment != null) {
+                        Booking booking = bookingService.getBookingById(payment.getBookingId());
+                        if (booking != null) {
+                            booking.setStatus("active");
+                            bookingService.updateBooking(booking);
+                        }
+                    }
+
                     response.sendRedirect("payment?action=adminList");
 
                 } catch (Exception e) {

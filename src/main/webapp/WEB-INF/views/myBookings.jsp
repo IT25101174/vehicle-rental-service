@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings — Intelligent Auto Rentals</title>
+    <title>My Bookings — DrivePoint Auto Rentals</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -208,11 +208,10 @@
     <a href="index.jsp" class="logo">
         <span class="logo-mark">
             <svg viewBox="0 0 14 14" fill="none">
-                <path d="M2 11L7 3L12 11" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M4 8.5H10" stroke="#000" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
+                    <path d="M4 2.5H7.5C10 2.5 11.5 4.5 11.5 7C11.5 9.5 10 11.5 7.5 11.5H4V2.5Z" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
         </span>
-        Intelligent Auto Rentals
+        DrivePoint Auto Rentals
     </a>
     <div class="nav-right">
         <a href="vehicle?action=list">Browse Fleet</a>
@@ -277,22 +276,22 @@
             %>
             <p><b>Payment Status:</b> <span class="status <%= payStatusClass %>" style="font-size: 0.68rem; padding: 0.15rem 0.55rem; border-radius: 4px; display: inline-block; letter-spacing: normal; text-transform: none;"><%= payStatusText %></span></p>
 
-                        <% if ("active".equals(b.getStatus())) { %>
+                        <% if ("pending".equals(b.getStatus()) || "active".equals(b.getStatus())) { %>
                             <a href="payment?action=checkout&bookingId=<%= b.getId() %>"
                                style="display: block; text-align: center; margin-top: 1rem; padding: 0.6rem; background: var(--gold); color: #000; text-decoration: none; border-radius: 5px; font-size: 0.85rem; font-weight: 600; transition: opacity 0.2s;"
                                onmouseover="this.style.opacity='0.85'"
                                onmouseout="this.style.opacity='1'">
-                               Pay / View Invoice
+                               <%= "active".equals(b.getStatus()) ? "View Invoice / Receipt" : "Pay / View Invoice" %>
+                            </a>
+
+                            <a href="booking?action=delete&id=<%= b.getId() %>"
+                               style="display: block; text-align: center; margin-top: 0.5rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
+                               onmouseover="this.style.background='rgba(248,113,113,0.1)'"
+                               onmouseout="this.style.background='transparent'"
+                               onclick="return confirm('Are you sure you want to cancel this booking?');">
+                               Cancel Reservation
                             </a>
                         <% } %>
-
-                        <a href="booking?action=delete&id=<%= b.getId() %>"
-                           style="display: block; text-align: center; margin-top: 0.5rem; padding: 0.6rem; border: 1px solid rgba(248,113,113,0.3); color: #f87171; text-decoration: none; border-radius: 5px; font-size: 0.85rem; transition: background 0.2s;"
-                           onmouseover="this.style.background='rgba(248,113,113,0.1)'"
-                           onmouseout="this.style.background='transparent'"
-                           onclick="return confirm('Are you sure you want to cancel this booking?');">
-                           Cancel Reservation
-                        </a>
 
         </div>
     <% } %>
@@ -309,7 +308,7 @@
 </div>
 
 <footer>
-    <p>&copy; 2026 Intelligent Auto Rentals. All rights reserved.</p>
+    <p>&copy; 2026 DrivePoint Auto Rentals. All rights reserved.</p>
 </footer>
 
 </body>

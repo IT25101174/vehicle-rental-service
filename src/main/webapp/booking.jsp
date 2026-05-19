@@ -271,17 +271,23 @@
 
                             // Dynamically look up vehicle specs
                             String vIdStr = request.getParameter("vehicleId");
+                            if (vIdStr == null || vIdStr.trim().isEmpty()) {
+                                response.sendRedirect("vehicle?action=list");
+                                return;
+                            }
+
                             String vehicleDisplayName = "Unknown Vehicle";
-                            if (vIdStr != null && !vIdStr.trim().isEmpty()) {
-                                try {
-                                    int vId = Integer.parseInt(vIdStr.trim());
-                                    com.vehiclerental.model.Vehicle vehicle = new com.vehiclerental.service.VehicleService().getVehicleById(vId);
-                                    if (vehicle != null) {
-                                        vehicleDisplayName = vehicle.getBrand() + " (" + vehicle.getType() + ")";
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                            try {
+                                int vId = Integer.parseInt(vIdStr.trim());
+                                com.vehiclerental.model.Vehicle vehicle = new com.vehiclerental.service.VehicleService().getVehicleById(vId);
+                                if (vehicle == null) {
+                                    response.sendRedirect("vehicle?action=list");
+                                    return;
                                 }
+                                vehicleDisplayName = vehicle.getBrand() + " (" + vehicle.getType() + ")";
+                            } catch (Exception e) {
+                                response.sendRedirect("vehicle?action=list");
+                                return;
                             }
                         %>
                             <div class="form-group">

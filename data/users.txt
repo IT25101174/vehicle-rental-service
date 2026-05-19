@@ -8,3 +8,4 @@
 9,Beam,beamadmin@test.com,thamira,admin
 10,Thamira Weediyage,thamira@test.com,thamira,customer
 11,mick,mick@gmail.com,123,customer
+12,Buddhima Imasha,buddhimaimasha2005@gmail.com,Buddhima1231,customer

@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <% String sessionRole=(String) session.getAttribute("role"); if ("admin".equalsIgnoreCase(sessionRole)) {
-        response.sendRedirect("admin?action=dashboard"); return; } %>
         <!DOCTYPE html>
         <html lang="en">
 
@@ -304,10 +302,7 @@
                                 <%= userName %>
                             </strong></span>
                         <a href="user?action=editProfile">My Profile</a>
-                        <% if ("admin".equalsIgnoreCase(role)) { %>
-                            <a href="user?action=listUsers">Admin Panel</a>
-                            <% } %>
-                                <a href="user?action=logout" style="color: #ef4444;">Logout</a>
+                        <a href="user?action=logout" style="color: #ef4444;">Logout</a>
                                 <% } else { %>
                                     <a href="login.html">Login</a>
                                     <a href="register.html" class="nav-cta">Sign Up</a>

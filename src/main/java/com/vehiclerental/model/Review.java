@@ -2,6 +2,7 @@ package com.vehiclerental.model;
 
 public class Review {
 
+    // Encapsulation — all fields are private
     private int id;
     private int userId;
     private int vehicleId;

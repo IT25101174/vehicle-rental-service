@@ -279,5 +279,24 @@
     </div>
 </main>
 
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const errorMsg = document.getElementById('errorMsg');
+    
+    if (params.get('error') === 'invalid') {
+        errorMsg.innerText = "Invalid email or password. Please try again.";
+        errorMsg.style.display = 'block';
+    } else if (params.get('error') === 'adminProhibited') {
+        errorMsg.innerText = "Administrators must sign in via the authorized Admin Portal.";
+        errorMsg.style.display = 'block';
+    } else if (params.get('success') === 'true') {
+        errorMsg.innerText = "Registration successful! Please sign in below.";
+        errorMsg.style.background = "rgba(74,222,128,0.08)";
+        errorMsg.style.borderColor = "rgba(74,222,128,0.22)";
+        errorMsg.style.color = "#4ade80";
+        errorMsg.style.display = 'block';
+    }
+</script>
+
 </body>
 </html>

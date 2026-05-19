@@ -11,7 +11,6 @@ public class BookingService {
 
     private final String FILE_PATH = "data/bookings.txt";
 
-    // CREATE
     public void addBooking(Booking booking) throws IOException {
         int newId = FileHandler.getNextId(FILE_PATH);
         booking.setId(newId);
@@ -26,7 +25,6 @@ public class BookingService {
         FileHandler.appendLine(FILE_PATH, line);
     }
 
-    // READ ALL
     public List<Booking> getAllBookings() throws IOException {
         List<String> lines = FileHandler.readAll(FILE_PATH);
         List<Booking> list = new ArrayList<>();
@@ -48,7 +46,7 @@ public class BookingService {
         return list;
     }
 
-    // READ BY ID
+
     public Booking getBookingById(int id) throws IOException {
         List<Booking> all = getAllBookings();
         for (Booking b : all) {
@@ -59,7 +57,7 @@ public class BookingService {
         return null;
     }
 
-    // READ BY USER
+
     public List<Booking> getBookingsByUser(int userId) throws IOException {
         List<Booking> all = getAllBookings();
         List<Booking> result = new ArrayList<>();
@@ -72,7 +70,7 @@ public class BookingService {
         return result;
     }
 
-    // DELETE (Cancel)
+
     public void deleteBooking(int id) throws IOException {
         // Cascading Delete — Void associated payment records to prevent ID recycling pollution!
         try {
@@ -93,7 +91,7 @@ public class BookingService {
         FileHandler.writeAll(FILE_PATH, updated);
     }
 
-    // UPDATE
+
     public void updateBooking(Booking updatedBooking) throws IOException {
         List<String> lines = FileHandler.readAll(FILE_PATH);
         List<String> updated = new ArrayList<>();
@@ -116,7 +114,7 @@ public class BookingService {
         FileHandler.writeAll(FILE_PATH, updated);
     }
 
-    // AVAILABILITY CHECK
+
     public boolean isVehicleAvailable(int vehicleId, String start, String end) throws IOException {
         List<Booking> bookings = getAllBookings();
 

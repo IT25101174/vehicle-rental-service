@@ -16,40 +16,11 @@ public class BookingServlet extends HttpServlet {
 
     private BookingService service = new BookingService();
 
-    // CREATE booking
-    // Added ServletException for VS
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // Code
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Get current user from session
+
         HttpSession session = request.getSession();
         Integer sessionUserId = (Integer) session.getAttribute("userId");
         
@@ -62,7 +33,7 @@ public class BookingServlet extends HttpServlet {
         String start = request.getParameter("startDate");
         String end = request.getParameter("endDate");
 
-        // Server-side validation to prevent empty dates in the flat-file database
+
         if (start == null || start.trim().isEmpty() || end == null || end.trim().isEmpty()) {
             response.sendRedirect("booking?action=my&error=missing_dates");
             return;
@@ -78,8 +49,7 @@ public class BookingServlet extends HttpServlet {
         }
     }
 
-    // READ bookings
-    // Added ServletException for VS Code
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

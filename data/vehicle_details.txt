@@ -10,3 +10,5 @@
 11,Petrol,5,true,false
 12,Petrol,5,true,false
 13,diesel,5,true,false
+14,Petrol,4,true,false
+15,Diesal,9,true,true

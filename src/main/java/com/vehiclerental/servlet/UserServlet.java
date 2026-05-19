@@ -138,6 +138,12 @@ public class UserServlet extends HttpServlet
             //if login done
             if (user != null)
             {
+                // Admins are prohibited from logging in via standard customer portal!
+                if ("admin".equalsIgnoreCase(user.getRole())) {
+                    response.sendRedirect("login.html?error=adminProhibited");
+                    return;
+                }
+
                 //create session
                 HttpSession session = request.getSession();
                 //store user data

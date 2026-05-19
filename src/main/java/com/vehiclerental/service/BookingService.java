@@ -13,6 +13,9 @@ public class BookingService {
 
     // CREATE
     public void addBooking(Booking booking) throws IOException {
+        int newId = FileHandler.getNextId(FILE_PATH);
+        booking.setId(newId);
+        
         String line = booking.getId() + "," +
                 booking.getUserId() + "," +
                 booking.getVehicleId() + "," +
@@ -45,6 +48,17 @@ public class BookingService {
         return list;
     }
 
+    // READ BY ID
+    public Booking getBookingById(int id) throws IOException {
+        List<Booking> all = getAllBookings();
+        for (Booking b : all) {
+            if (b.getId() == id) {
+                return b;
+            }
+        }
+        return null;
+    }
+
     // READ BY USER
     public List<Booking> getBookingsByUser(int userId) throws IOException {
         List<Booking> all = getAllBookings();
@@ -60,6 +74,13 @@ public class BookingService {
 
     // DELETE (Cancel)
     public void deleteBooking(int id) throws IOException {
+        // Cascading Delete — Void associated payment records to prevent ID recycling pollution!
+        try {
+            new com.vehiclerental.service.PaymentService().deletePaymentByBookingId(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         List<String> lines = FileHandler.readAll(FILE_PATH);
         List<String> updated = new ArrayList<>();
 
@@ -100,7 +121,8 @@ public class BookingService {
         List<Booking> bookings = getAllBookings();
 
         for (Booking b : bookings) {
-            if (b.getVehicleId() == vehicleId && b.getStatus().equals("active")) {
+            String status = b.getStatus();
+            if (b.getVehicleId() == vehicleId && ("active".equalsIgnoreCase(status) || "pending".equalsIgnoreCase(status))) {
 
                 if (start.compareTo(b.getEndDate()) <= 0 &&
                         end.compareTo(b.getStartDate()) >= 0) {

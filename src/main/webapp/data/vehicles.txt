@@ -1,6 +1,0 @@
-1,Toyota,Car,5500.00,true
-2,Honda,Bike,3000.00,true
-3,Nissan,Van,8000.00,false
-4,Suzuki,Bike,2500.00,true
-5,Toyota,Van,9000.00,true
-6,BMW,Car,15000.00,false

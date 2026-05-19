@@ -13,3 +13,14 @@ public class VehicleRentalApplication {
         System.out.println("🚗 Vehicle Rental System is running on http://localhost:8080");
     }
 }
+
+
+
+
+
+
+
+
+
+
+

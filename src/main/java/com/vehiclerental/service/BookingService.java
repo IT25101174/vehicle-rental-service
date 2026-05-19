@@ -72,7 +72,7 @@ public class BookingService {
 
 
     public void deleteBooking(int id) throws IOException {
-        
+
         try {
             new com.vehiclerental.service.PaymentService().deletePaymentByBookingId(id);
         } catch (Exception e) {

@@ -72,7 +72,7 @@ public class BookingService {
 
 
     public void deleteBooking(int id) throws IOException {
-        // Cascading Delete — Void associated payment records to prevent ID recycling pollution!
+        
         try {
             new com.vehiclerental.service.PaymentService().deletePaymentByBookingId(id);
         } catch (Exception e) {
